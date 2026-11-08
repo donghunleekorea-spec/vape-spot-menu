@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전담스팟 - 상품 메뉴 및 주문서</title>
+    <!-- 카카오 SDK 로드 -->
+    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; padding-bottom: 120px; }
+        header { background: #212529; color: white; padding: 16px; text-align: center; font-size: 18px; font-weight: bold; }
+        .container { padding: 16px; max-width: 600px; margin: 0 auto; }
+        .category-title { font-size: 16px; font-weight: bold; margin: 20px 0 10px 4px; color: #495057; }
+        .product-card { background: white; border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .product-info h3 { margin: 0 0 4px 0; font-size: 15px; color: #212529; }
+        .product-info p { margin: 0; font-size: 14px; color: #e03131; font-weight: bold; }
+        .quantity-control { display: flex; align-items: center; gap: 10px; }
+        .quantity-control button { width: 32px; height: 32px; border: 1px solid #ced4da; background: white; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .quantity-control span { font-size: 15px; font-weight: bold; width: 20px; text-align: center; }
+        .order-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #dee2e6; padding: 16px; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; }
+        .order-summary { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; font-weight: bold; }
+        .order-btn { width: 100%; background: #fee500; color: #191919; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <header>전담스팟 통합 메뉴판</header>
+
+    <div class="container" id="menu-container">
+        <!-- 카테고리 1: 액상 -->
+        <div class="category-title">💨 입호흡 / 폐호흡 액상</div>
+        <div class="product-card" data-name="알로에베라 액상" data-price="25000">
+            <div class="product-info">
+                <h3>알로에베라 액상</h3>
+                <p>25,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+        <div class="product-card" data-name="멘솔 하이퍼 액상" data-price="25000">
+            <div class="product-info">
+                <h3>멘솔 하이퍼 액상</h3>
+                <p>25,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <!-- 카테고리 2: 기기 -->
+        <div class="category-title">🔋 전자기기 (디바이스)</div>
+        <div class="product-card" data-name="발라맥스 기기 세트" data-price="48000">
+            <div class="product-info">
+                <h3>발라맥스 기기 세트</h3>
+                <p>48,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <!-- 카테고리 3: 소모품 -->
+        <div class="category-title">⚙️ 코일 및 소모품</div>
+        <div class="product-card" data-name="교체용 코일 (0.6ohm)" data-price="4000">
+            <div class="product-info">
+                <h3>교체용 코일 (0.6ohm)</h3>
+                <p>4,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 하단 고정 주문 바 -->
+    <div class="order-bar">
+        <div class="order-summary">
+            <span>총 주문 금액</span>
+            <span id="total-price">0원</span>
+        </div>
+        <button class="order-btn" onclick="sendOrder()">카카오톡으로 주문 내역 전송하기</button>
+    </div>
+
+    <script>
+        // 카카오 SDK 초기화 (본인의 자바스크립트 키 입력 필요)
+        try {
+            Kakao.init('YOUR_KAKAO_JS_KEY');
+        } catch(e) {}
+
+        function changeQty(btn, delta) {
+            const card = btn.closest('.product-card');
+            const qtySpan = card.querySelector('.qty');
+            let currentQty = parseInt(qtySpan.textContent) + delta;
+            if (currentQty < 0) currentQty = 0;
+            qtySpan.textContent = currentQty;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                const price = parseInt(card.dataset.price);
+                const qty = parseInt(card.querySelector('.qty').textContent);
+                total += price * qty;
+            });
+            document.getElementById('total-price').textContent = total.toLocaleString() + '원';
+        }
+
+        function sendOrder() {
+            let orderText = "[전담스팟 주문 내역서]\n--------------------\n";
+            let hasItem = false;
+            let total = 0;
+
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                const name = card.dataset.name;
+                const price = parseInt(card.dataset.price);
+                const qty = parseInt(card.querySelector('.qty').textContent);
+                if (qty > 0) {
+                    hasItem = true;
+                    orderText += `• ${name} x ${qty}개 (${(price*qty).toLocaleString()}원)\n`;
+                    total += price * qty;
+                }
+            });
+
+            if (!hasItem) {
+                alert("선택된 상품이 없습니다. 수량을 선택해 주세요.");
+                return;
+            }
+
+            orderText += `--------------------\n총 결제금액: ${total.toLocaleString()}원`;
+
+            // 카카오톡 공유하기 또는 클립보드 복사 처리
+            if (typeof Kakao !== 'undefined' && Kakao.isInitialized()) {
+                Kakao.Share.sendDefault({
+                    objectType: 'text',
+                    text: orderText,
+                    link: { mobileWebUrl: window.location.href, webUrl: window.location.href }
+                });
+            } else {
+                // 카카오 SDK 미연동 시 클립보드 복사 백업
+                navigator.clipboard.writeText(orderText).then(() => {
+                    alert("주문 내역이 복사되었습니다! 카카오톡창에 붙여넣어 주세요.\n\n" + orderText);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
