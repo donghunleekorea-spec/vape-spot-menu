@@ -3,18 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>전담스팟 정관점 - 전체 메뉴 및 주문서</title>
+    <title>전담스팟 정관점 - 전체 메뉴판</title>
     <!-- 카카오 SDK -->
     <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 0; padding-bottom: 200px; color: #333; }
-        header { background: #191f28; color: #ffffff; padding: 18px 16px; text-align: center; font-size: 18px; font-weight: 700; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 0; padding-bottom: 210px; color: #333; }
+        header { background: #191f28; color: #ffffff; padding: 16px; text-align: center; font-size: 17px; font-weight: 700; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
         .notice-bar { background: #e8f3ff; color: #1b64da; padding: 10px 16px; font-size: 13px; font-weight: 600; text-align: center; border-bottom: 1px solid #d0e3ff; }
-        .container { padding: 12px 16px; max-width: 600px; margin: 0 auto; }
-        .category-title { font-size: 16px; font-weight: 700; margin: 24px 0 10px 4px; color: #191f28; display: flex; align-items: center; gap: 6px; }
         
-        /* 상품 카드 스타일 */
+        /* 1. 상단 카테고리 가로 스크롤 탭 바 */
+        .category-tab-wrapper { position: sticky; top: 51px; background: #ffffff; z-index: 90; border-bottom: 1px solid #e5e8eb; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+        .category-tabs { display: flex; overflow-x: auto; white-space: nowrap; padding: 10px 12px; gap: 8px; scrollbar-width: none; }
+        .category-tabs::-webkit-scrollbar { display: none; }
+        .tab-btn { background: #f2f4f6; border: 1px solid #eaeef2; border-radius: 20px; padding: 8px 14px; font-size: 13px; font-weight: 600; color: #4e5968; cursor: pointer; flex-shrink: 0; transition: all 0.2s ease; }
+        .tab-btn.active { background: #191f28; color: #ffffff; border-color: #191f28; }
+
+        .container { padding: 16px; max-width: 600px; margin: 0 auto; }
+        
+        /* 2. 카테고리 섹션 및 세로 상품 목록 */
+        .category-section { display: none; }
+        .category-section.active { display: block; }
+        .category-title { font-size: 16px; font-weight: 700; margin: 0 0 12px 2px; color: #191f28; }
+        
         .product-card { background: #ffffff; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.04); border: 1px solid #eaeef2; gap: 12px; }
         .product-img { width: 64px; height: 64px; border-radius: 8px; object-fit: cover; background-color: #f2f4f6; flex-shrink: 0; border: 1px solid #e5e8eb; }
         .product-info { flex: 1; min-width: 0; }
@@ -22,17 +33,16 @@
         .product-info p { margin: 0; font-size: 14px; color: #f04452; font-weight: 700; }
         .product-info .sub-text { font-size: 11px; color: #8b95a1; margin-top: 2px; }
         
-        /* 수량 조절 버튼 */
         .quantity-control { display: flex; align-items: center; gap: 6px; background: #f2f4f6; padding: 4px; border-radius: 8px; flex-shrink: 0; }
         .quantity-control button { width: 30px; height: 30px; border: none; background: #ffffff; border-radius: 6px; font-size: 16px; font-weight: bold; color: #4e5968; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .quantity-control button:active { background: #e5e8eb; }
         .quantity-control span { font-size: 14px; font-weight: 700; width: 20px; text-align: center; color: #191f28; }
         
-        /* 하단 실시간 요약 및 주문 바 */
+        /* 3. 하단 실시간 요약 및 주문 바 */
         .order-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid #e5e8eb; padding: 14px 20px; box-shadow: 0 -4px 16px rgba(0,0,0,0.08); max-width: 600px; margin: 0 auto; z-index: 99; }
-        .selected-preview { max-height: 90px; overflow-y: auto; margin-bottom: 10px; font-size: 12px; color: #4e5968; border-bottom: 1px solid #f2f4f6; padding-bottom: 8px; }
+        .selected-preview { max-height: 85px; overflow-y: auto; margin-bottom: 10px; font-size: 12px; color: #4e5968; border-bottom: 1px solid #f2f4f6; padding-bottom: 8px; }
         .selected-item-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
-        .order-summary { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 15px; font-weight: 700; color: #191f28; }
+        .order-summary { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 15px; font-weight: 700; color: #191f28; }
         .order-summary .total-val { color: #f04452; font-size: 18px; }
         .order-btn { width: 100%; background: #fee500; color: #191919; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; }
         .order-btn:active { background: #ebd200; }
@@ -41,148 +51,201 @@
 <body>
 
     <header>전담스팟 정관점 - 전체 메뉴판</header>
-    <div class="notice-bar">💡 원하시는 제품의 수량을 선택하시면 하단에 실시간으로 내역이 반영됩니다.</div>
+    <div class="notice-bar">💡 상단 탭을 눌러 종류별 상품 목록을 확인하실 수 있습니다.</div>
 
-    <div class="container" id="menu-container">
+    <!-- 가로로 배치된 카테고리 탭 (옆으로 스크롤 가능) -->
+    <div class="category-tab-wrapper">
+        <div class="category-tabs">
+            <button class="tab-btn active" onclick="switchCategory('cat-30ml', this)">💨 30mL 액상</button>
+            <button class="tab-btn" onclick="switchCategory('cat-100ml', this)">☁️ 100mL 액상</button>
+            <button class="tab-btn" onclick="switchCategory('cat-device', this)">📱 디바이스</button>
+            <button class="tab-btn" onclick="switchCategory('cat-disposable', this)">🔋 일회용</button>
+            <button class="tab-btn" onclick="switchCategory('cat-zeronic', this)">🛡️ 무니코틴</button>
+            <button class="tab-btn" onclick="switchCategory('cat-parts', this)">⚙️ 코일/팟</button>
+        </div>
+    </div>
 
-        <!-- 1. 30mL 액상 (입호흡) -->
-        <div class="category-title">💨 30mL 액상 (입호흡)</div>
-        
-        <div class="product-card" data-name="알로에베라 (30mL 입호흡)" data-price="25000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="알로에베라">
-            <div class="product-info">
-                <h3>알로에베라 (청포도/알로에)</h3>
-                <p>25,000원</p>
+    <div class="container">
+
+        <!-- 1. 30mL 액상 (세로 목록) -->
+        <div id="cat-30ml" class="category-section active">
+            <div class="category-title">💨 30mL 입호흡 액상 목록</div>
+            
+            <div class="product-card" data-name="알로에베라 (30mL 입호흡)" data-price="25000">
+                <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="알로에베라">
+                <div class="product-info">
+                    <h3>알로에베라 (청포도/알로에)</h3>
+                    <p>25,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button onclick="changeQty(this, 1)">+</button>
+                </div>
             </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
+
+            <div class="product-card" data-name="아쿠아 멘솔 (30mL 입호흡)" data-price="25000">
+                <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="아쿠아 멘솔">
+                <div class="product-info">
+                    <h3>아쿠아 멘솔 (강력한 순수 멘솔)</h3>
+                    <p>25,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-name="샤인머스캣 (30mL 입호흡)" data-price="25000">
+                <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="샤인머스캣">
+                <div class="product-info">
+                    <h3>샤인머스캣 (달콤 청포도향)</h3>
+                    <p>25,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button onclick="changeQty(this, 1)">+</button>
+                </div>
             </div>
         </div>
 
-        <div class="product-card" data-name="아쿠아 멘솔 (30mL 입호흡)" data-price="25000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="아쿠아 멘솔">
-            <div class="product-info">
-                <h3>아쿠아 멘솔 (순수 멘솔)</h3>
-                <p>25,000원</p>
+        <!-- 2. 100mL 액상 (세로 목록) -->
+        <div id="cat-100ml" class="category-section">
+            <div class="category-title">☁️ 100mL 폐호흡 액상 목록</div>
+
+            <div class="product-card" data-name="알로에베라 (100mL 폐호흡)" data-price="35000">
+                <img class="product-img" src="https://via.placeholder.com/100?text=100mL" alt="알로에베라 폐호흡">
+                <div class="product-info">
+                    <h3>알로에베라 대용량 (100mL)</h3>
+                    <p>35,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button onclick="changeQty(this, 1)">+</button>
+                </div>
             </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
+
+            <div class="product-card" data-name="아이스 망고 (100mL 폐호흡)" data-price="35000">
+                <img class="product-img" src="https://via.placeholder.com/100?text=100mL" alt="아이스 망고">
+                <div class="product-info">
+                    <h3>아이스 망고 대용량 (100mL)</h3>
+                    <p>35,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button onclick="changeQty(this, 1)">+</button>
+                </div>
             </div>
         </div>
 
-        <div class="product-card" data-name="샤인머스캣 (30mL 입호흡)" data-price="25000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="샤인머스캣">
-            <div class="product-info">
-                <h3>샤인머스캣 (달콤 청포도향)</h3>
-                <p>25,000원</p>
+        <!-- 3. 디바이스 (세로 목록) -->
+        <div id="cat-device" class="category-section">
+            <div class="category-title">📱 디바이스 본체 목록</div>
+
+            <div class="product-card" data-name="발라리안 MAX 디바이스" data-price="55000">
+                <img class="product-img" src="https://via.placeholder.com/100?text=DEVICE" alt="발라리안 MAX">
+                <div class="product-info">
+                    <h3>발라리안 MAX 풀세트</h3>
+                    <p>55,000원</p>
+                    <div class="sub-text">대용량 배터리 / 풍부한 맛표현</div>
+                </div>
+                <div class="quantity-control">
+                    <button onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button onclick="changeQty(this, 1)">+</button>
+                </div>
             </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
+
+            <div class="product-card" data-name="젤로 (JELLO) 디바이스" data-price="48000">
+                <img class="product-img" src="https://via.placeholder.com/100?text=DEVICE" alt="젤로">
+                <div class="product-info">
+                    <h3>젤로 (JELLO) 디바이스</h3>
+                    <p>48,000원</p>
+                    <div class="sub-text">누수 제로 / 타격감 최상</div>
+                </div>
+                <div class="quantity-control">
+                    <button onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button onclick="changeQty(this, 1)">+</button>
+                </div>
             </div>
         </div>
 
-        <!-- 2. 100mL 액상 (폐호흡) -->
-        <div class="category-title">☁️ 100mL 액상 (폐호흡)</div>
+        <!-- 4. 일회용 전자담배 (세로 목록) -->
+        <div id="cat-disposable" class="category-section">
+            <div class="category-title">🔋 일회용 전자담배 목록</div>
 
-        <div class="product-card" data-name="알로에베라 (100mL 폐호흡)" data-price="35000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=100mL" alt="알로에베라 폐호흡">
-            <div class="product-info">
-                <h3>알로에베라 대용량 (100mL)</h3>
-                <p>35,000원</p>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
+            <div class="product-card" data-name="일회용 팟 9000퍼프 (아이스원)" data-price="20000">
+                <img class="product-img" src="https://via.placeholder.com/100?text=DISPOSABLE" alt="일회용 9000">
+                <div class="product-info">
+                    <h3>대용량 9000퍼프 - 아이스원</h3>
+                    <p>20,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button onclick="changeQty(this, 1)">+</button>
+                </div>
             </div>
         </div>
 
-        <div class="product-card" data-name="아이스 망고 (100mL 폐호흡)" data-price="35000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=100mL" alt="아이스 망고">
-            <div class="product-info">
-                <h3>아이스 망고 대용량 (100mL)</h3>
-                <p>35,000원</p>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
+        <!-- 5. 무니코틴 (세로 목록) -->
+        <div id="cat-zeronic" class="category-section">
+            <div class="category-title">🛡️ 무니코틴 제품 목록</div>
+
+            <div class="product-card" data-name="무니코틴 알로에베라 (30mL)" data-price="25000">
+                <img class="product-img" src="https://via.placeholder.com/100?text=ZERO-NIC" alt="무니코틴 알로에">
+                <div class="product-info">
+                    <h3>무니코틴 알로에베라 (30mL)</h3>
+                    <p>25,000원</p>
+                    <div class="sub-text">타격감 및 멘솔 유지 / 니코틴 0%</div>
+                </div>
+                <div class="quantity-control">
+                    <button onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button onclick="changeQty(this, 1)">+</button>
+                </div>
             </div>
         </div>
 
-        <!-- 3. 디바이스 (기기 본체) -->
-        <div class="category-title">📱 디바이스 (기기 본체)</div>
+        <!-- 6. 코일/팟 (세로 목록) -->
+        <div id="cat-parts" class="category-section">
+            <div class="category-title">⚙️ 코일 & 공팟 목록</div>
 
-        <div class="product-card" data-name="발라리안 MAX 디바이스" data-price="55000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=DEVICE" alt="발라리안 MAX">
-            <div class="product-info">
-                <h3>발라리안 MAX 풀세트</h3>
-                <p>55,000원</p>
-                <div class="sub-text">대용량 배터리 / 풍부한 맛표현</div>
+            <div class="product-card" data-name="발라리안 코일 (0.6ohm)" data-price="4000">
+                <img class="product-img" src="https://via.placeholder.com/100?text=PARTS" alt="발라리안 코일">
+                <div class="product-info">
+                    <h3>발라리안 코일 0.6ohm</h3>
+                    <p>4,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button onclick="changeQty(this, 1)">+</button>
+                </div>
             </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
 
-        <div class="product-card" data-name="젤로 (JELLO) 디바이스" data-price="48000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=DEVICE" alt="젤로">
-            <div class="product-info">
-                <h3>젤로 (JELLO) 디바이스</h3>
-                <p>48,000원</p>
-                <div class="sub-text">누수 제로 / 타격감 최상</div>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <!-- 4. 일회용 전자담배 -->
-        <div class="category-title">🔋 일회용 전자담배</div>
-
-        <div class="product-card" data-name="일회용 팟 9000퍼프 (아이스원)" data-price="20000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=DISPOSABLE" alt="일회용 9000">
-            <div class="product-info">
-                <h3>대용량 9000퍼프 - 아이스원</h3>
-                <p>20,000원</p>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <!-- 5. 무니코틴 제품 -->
-        <div class="category-title">🛡️ 무니코틴 제품</div>
-
-        <div class="product-card" data-name="무니코틴 알로에베라 (30mL)" data-price="25000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=ZERO-NIC" alt="무니코틴 알로에">
-            <div class="product-info">
-                <h3>무니코틴 알로에베라 (30mL)</h3>
-                <p>25,000원</p>
-                <div class="sub-text">타격감 및 멘솔 유지 / 니코틴 0%</div>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
+            <div class="product-card" data-name="젤로 일체형 팟 (0.8ohm)" data-price="4500">
+                <img class="product-img" src="https://via.placeholder.com/100?text=PARTS" alt="젤로 팟">
+                <div class="product-info">
+                    <h3>젤로 일체형 팟 0.8ohm</h3>
+                    <p>4,500원</p>
+                </div>
+                <div class="quantity-control">
+                    <button onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button onclick="changeQty(this, 1)">+</button>
+                </div>
             </div>
         </div>
 
     </div>
 
-    <!-- 하단 고정 실시간 요약 및 주문 바 -->
+    <!-- 하단 실시간 통합 요약 및 주문 바 -->
     <div class="order-bar">
         <div class="selected-preview" id="selected-preview">
             <span style="color: #8b95a1;">선택된 상품이 없습니다.</span>
@@ -197,6 +260,16 @@
     <script>
         try { Kakao.init('YOUR_KAKAO_JS_KEY'); } catch(e) {}
 
+        // 카테고리 탭 전환 함수
+        function switchCategory(catId, btnElement) {
+            document.querySelectorAll('.category-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(catId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // 수량 변경 함수
         function changeQty(btn, delta) {
             const card = btn.closest('.product-card');
             const qtySpan = card.querySelector('.qty');
@@ -206,6 +279,7 @@
             updateRealtimeSummary();
         }
 
+        // 실시간 주문 내역 및 금액 업데이트 (카테고리와 무관하게 전체 선택 항목 계산)
         function updateRealtimeSummary() {
             let total = 0;
             let previewHtml = "";
@@ -232,6 +306,7 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
+        // 카카오톡 주문서 전송 함수
         function sendOrder() {
             let orderText = "[전담스팟 정관점 주문 내역서]\n--------------------\n";
             let hasItem = false;
