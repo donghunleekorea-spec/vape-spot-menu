@@ -3,35 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>전담스팟 정관점 - 전체 메뉴판 및 주문서</title>
+    <title>전담스팟 정관점 - 전체 메뉴 및 주문서</title>
     <!-- 카카오 SDK -->
     <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 0; padding-bottom: 140px; color: #333; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 0; padding-bottom: 200px; color: #333; }
         header { background: #191f28; color: #ffffff; padding: 18px 16px; text-align: center; font-size: 18px; font-weight: 700; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
         .notice-bar { background: #e8f3ff; color: #1b64da; padding: 10px 16px; font-size: 13px; font-weight: 600; text-align: center; border-bottom: 1px solid #d0e3ff; }
         .container { padding: 12px 16px; max-width: 600px; margin: 0 auto; }
         .category-title { font-size: 16px; font-weight: 700; margin: 24px 0 10px 4px; color: #191f28; display: flex; align-items: center; gap: 6px; }
         
-        /* 카드 레이아웃: 이미지 + 텍스트 + 수량버튼 연동 */
+        /* 상품 카드 스타일 */
         .product-card { background: #ffffff; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.04); border: 1px solid #eaeef2; gap: 12px; }
-        
-        /* 제품 이미지 스타일 */
         .product-img { width: 64px; height: 64px; border-radius: 8px; object-fit: cover; background-color: #f2f4f6; flex-shrink: 0; border: 1px solid #e5e8eb; }
-        
         .product-info { flex: 1; min-width: 0; }
-        .product-info h3 { margin: 0 0 4px 0; font-size: 15px; color: #333d4b; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-info h3 { margin: 0 0 4px 0; font-size: 14px; color: #333d4b; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .product-info p { margin: 0; font-size: 14px; color: #f04452; font-weight: 700; }
-        .product-info .sub-text { font-size: 11px; color: #8b95a1; margin-top: 2px; font-weight: normal; }
+        .product-info .sub-text { font-size: 11px; color: #8b95a1; margin-top: 2px; }
         
+        /* 수량 조절 버튼 */
         .quantity-control { display: flex; align-items: center; gap: 6px; background: #f2f4f6; padding: 4px; border-radius: 8px; flex-shrink: 0; }
         .quantity-control button { width: 30px; height: 30px; border: none; background: #ffffff; border-radius: 6px; font-size: 16px; font-weight: bold; color: #4e5968; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .quantity-control button:active { background: #e5e8eb; }
         .quantity-control span { font-size: 14px; font-weight: 700; width: 20px; text-align: center; color: #191f28; }
         
-        .order-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid #e5e8eb; padding: 16px 20px; box-shadow: 0 -4px 16px rgba(0,0,0,0.08); max-width: 600px; margin: 0 auto; z-index: 99; }
-        .order-summary { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; font-weight: 700; color: #191f28; }
+        /* 하단 실시간 요약 및 주문 바 */
+        .order-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid #e5e8eb; padding: 14px 20px; box-shadow: 0 -4px 16px rgba(0,0,0,0.08); max-width: 600px; margin: 0 auto; z-index: 99; }
+        .selected-preview { max-height: 90px; overflow-y: auto; margin-bottom: 10px; font-size: 12px; color: #4e5968; border-bottom: 1px solid #f2f4f6; padding-bottom: 8px; }
+        .selected-item-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .order-summary { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 15px; font-weight: 700; color: #191f28; }
         .order-summary .total-val { color: #f04452; font-size: 18px; }
         .order-btn { width: 100%; background: #fee500; color: #191919; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; }
         .order-btn:active { background: #ebd200; }
@@ -40,15 +41,15 @@
 <body>
 
     <header>전담스팟 정관점 - 전체 메뉴판</header>
-    <div class="notice-bar">💡 수량을 선택하신 후 하단 전송 버튼을 누르면 카카오톡 주문서가 자동 작성됩니다.</div>
+    <div class="notice-bar">💡 원하시는 제품의 수량을 선택하시면 하단에 실시간으로 내역이 반영됩니다.</div>
 
     <div class="container" id="menu-container">
 
-        <!-- 1. 입호흡 액상 (30ml) -->
-        <div class="category-title">💨 입호흡 액상 (MTL / 30ml)</div>
+        <!-- 1. 30mL 액상 (입호흡) -->
+        <div class="category-title">💨 30mL 액상 (입호흡)</div>
         
-        <div class="product-card" data-name="알로에베라 (입호흡)" data-price="25000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=알로에" alt="알로에베라">
+        <div class="product-card" data-name="알로에베라 (30mL 입호흡)" data-price="25000">
+            <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="알로에베라">
             <div class="product-info">
                 <h3>알로에베라 (청포도/알로에)</h3>
                 <p>25,000원</p>
@@ -60,10 +61,10 @@
             </div>
         </div>
 
-        <div class="product-card" data-name="아쿠아 멘솔 (입호흡)" data-price="25000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=멘솔" alt="아쿠아 멘솔">
+        <div class="product-card" data-name="아쿠아 멘솔 (30mL 입호흡)" data-price="25000">
+            <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="아쿠아 멘솔">
             <div class="product-info">
-                <h3>아쿠아 멘솔 (강력한 순수 멘솔)</h3>
+                <h3>아쿠아 멘솔 (순수 멘솔)</h3>
                 <p>25,000원</p>
             </div>
             <div class="quantity-control">
@@ -73,21 +74,8 @@
             </div>
         </div>
 
-        <div class="product-card" data-name="아이스 자몽파인 (입호흡)" data-price="25000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=자몽" alt="아이스 자몽파인">
-            <div class="product-info">
-                <h3>아이스 자몽파인 (상큼 과일mix)</h3>
-                <p>25,000원</p>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="product-card" data-name="샤인머스캣 (입호흡)" data-price="25000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=청포도" alt="샤인머스캣">
+        <div class="product-card" data-name="샤인머스캣 (30mL 입호흡)" data-price="25000">
+            <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="샤인머스캣">
             <div class="product-info">
                 <h3>샤인머스캣 (달콤 청포도향)</h3>
                 <p>25,000원</p>
@@ -99,11 +87,14 @@
             </div>
         </div>
 
-        <div class="product-card" data-name="클래식 시가 (입호흡)" data-price="25000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=시가" alt="클래식 시가">
+        <!-- 2. 100mL 액상 (폐호흡) -->
+        <div class="category-title">☁️ 100mL 액상 (폐호흡)</div>
+
+        <div class="product-card" data-name="알로에베라 (100mL 폐호흡)" data-price="35000">
+            <img class="product-img" src="https://via.placeholder.com/100?text=100mL" alt="알로에베라 폐호흡">
             <div class="product-info">
-                <h3>클래식 시가 (묵직한 연초향)</h3>
-                <p>25,000원</p>
+                <h3>알로에베라 대용량 (100mL)</h3>
+                <p>35,000원</p>
             </div>
             <div class="quantity-control">
                 <button onclick="changeQty(this, -1)">-</button>
@@ -112,14 +103,11 @@
             </div>
         </div>
 
-        <!-- 2. 폐호흡 액상 (60ml) -->
-        <div class="category-title">☁️ 폐호흡 액상 (DTL / 60ml)</div>
-
-        <div class="product-card" data-name="알로에베라 (폐호흡)" data-price="30000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=모드액상" alt="알로에베라 폐호흡">
+        <div class="product-card" data-name="아이스 망고 (100mL 폐호흡)" data-price="35000">
+            <img class="product-img" src="https://via.placeholder.com/100?text=100mL" alt="아이스 망고">
             <div class="product-info">
-                <h3>알로에베라 모드액상 (60ml)</h3>
-                <p>30,000원</p>
+                <h3>아이스 망고 대용량 (100mL)</h3>
+                <p>35,000원</p>
             </div>
             <div class="quantity-control">
                 <button onclick="changeQty(this, -1)">-</button>
@@ -128,53 +116,11 @@
             </div>
         </div>
 
-        <div class="product-card" data-name="아이스 망고 (폐호흡)" data-price="30000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=망고" alt="아이스 망고">
-            <div class="product-info">
-                <h3>아이스 망고 모드액상 (60ml)</h3>
-                <p>30,000원</p>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <!-- 3. 일회용 전자담배 -->
-        <div class="category-title">🔋 일회용 전자담배 (대용량 팟)</div>
-
-        <div class="product-card" data-name="일회용 팟 9000퍼프 (아이스원)" data-price="20000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=9000퍼프" alt="아이스원">
-            <div class="product-info">
-                <h3>대용량 9000퍼프 - 아이스원</h3>
-                <p>20,000원</p>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="product-card" data-name="일회용 팟 9000퍼프 (퍼플베리)" data-price="20000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=퍼플베리" alt="퍼플베리">
-            <div class="product-info">
-                <h3>대용량 9000퍼프 - 퍼플베리</h3>
-                <p>20,000원</p>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <!-- 4. 기기 디바이스 -->
-        <div class="category-title">📱 기기 디바이스 본체</div>
+        <!-- 3. 디바이스 (기기 본체) -->
+        <div class="category-title">📱 디바이스 (기기 본체)</div>
 
         <div class="product-card" data-name="발라리안 MAX 디바이스" data-price="55000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=VALYRIAN" alt="발라리안 MAX">
+            <img class="product-img" src="https://via.placeholder.com/100?text=DEVICE" alt="발라리안 MAX">
             <div class="product-info">
                 <h3>발라리안 MAX 풀세트</h3>
                 <p>55,000원</p>
@@ -188,7 +134,7 @@
         </div>
 
         <div class="product-card" data-name="젤로 (JELLO) 디바이스" data-price="48000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=JELLO" alt="젤로">
+            <img class="product-img" src="https://via.placeholder.com/100?text=DEVICE" alt="젤로">
             <div class="product-info">
                 <h3>젤로 (JELLO) 디바이스</h3>
                 <p>48,000원</p>
@@ -201,12 +147,14 @@
             </div>
         </div>
 
-        <div class="product-card" data-name="아스몬 (ASMON) 디바이스" data-price="50000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=ASMON" alt="아스몬">
+        <!-- 4. 일회용 전자담배 -->
+        <div class="category-title">🔋 일회용 전자담배</div>
+
+        <div class="product-card" data-name="일회용 팟 9000퍼프 (아이스원)" data-price="20000">
+            <img class="product-img" src="https://via.placeholder.com/100?text=DISPOSABLE" alt="일회용 9000">
             <div class="product-info">
-                <h3>아스몬 (ASMON) 디바이스</h3>
-                <p>50,000원</p>
-                <div class="sub-text">아스베이프 x 몬스터즈</div>
+                <h3>대용량 9000퍼프 - 아이스원</h3>
+                <p>20,000원</p>
             </div>
             <div class="quantity-control">
                 <button onclick="changeQty(this, -1)">-</button>
@@ -215,53 +163,15 @@
             </div>
         </div>
 
-        <!-- 5. 소모품 (코일 / 카트리지 / 팟) -->
-        <div class="category-title">⚙️ 코일 & 공팟 소모품</div>
+        <!-- 5. 무니코틴 제품 -->
+        <div class="category-title">🛡️ 무니코틴 제품</div>
 
-        <div class="product-card" data-name="발라리안 교체용 코일 (0.6ohm)" data-price="4000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=COIL" alt="발라리안 코일">
+        <div class="product-card" data-name="무니코틴 알로에베라 (30mL)" data-price="25000">
+            <img class="product-img" src="https://via.placeholder.com/100?text=ZERO-NIC" alt="무니코틴 알로에">
             <div class="product-info">
-                <h3>발라리안 코일 0.6ohm (1개)</h3>
-                <p>4,000원</p>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="product-card" data-name="발라리안 교체용 코일 (1.0ohm)" data-price="4000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=COIL" alt="발라리안 코일">
-            <div class="product-info">
-                <h3>발라리안 코일 1.0ohm (1개)</h3>
-                <p>4,000원</p>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="product-card" data-name="젤로 일체형 팟 (0.8ohm)" data-price="4500">
-            <img class="product-img" src="https://via.placeholder.com/100?text=JELLO+POD" alt="젤로 팟">
-            <div class="product-info">
-                <h3>젤로 일체형 팟 0.8ohm (1개)</h3>
-                <p>4,500원</p>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-
-        <div class="product-card" data-name="아스몬 팟 카트리지" data-price="5000">
-            <img class="product-img" src="https://via.placeholder.com/100?text=ASMON+POD" alt="아스몬 팟">
-            <div class="product-info">
-                <h3>아스몬 공팟 카트리지 (1개)</h3>
-                <p>5,000원</p>
+                <h3>무니코틴 알로에베라 (30mL)</h3>
+                <p>25,000원</p>
+                <div class="sub-text">타격감 및 멘솔 유지 / 니코틴 0%</div>
             </div>
             <div class="quantity-control">
                 <button onclick="changeQty(this, -1)">-</button>
@@ -272,10 +182,13 @@
 
     </div>
 
-    <!-- 하단 고정 주문 금액 및 전송 바 -->
+    <!-- 하단 고정 실시간 요약 및 주문 바 -->
     <div class="order-bar">
+        <div class="selected-preview" id="selected-preview">
+            <span style="color: #8b95a1;">선택된 상품이 없습니다.</span>
+        </div>
         <div class="order-summary">
-            <span>총 선택 금액</span>
+            <span>총 결제 금액</span>
             <span class="total-val" id="total-price">0원</span>
         </div>
         <button class="order-btn" onclick="sendOrder()">카카오톡으로 주문 내역 전송하기</button>
@@ -290,17 +203,32 @@
             let currentQty = parseInt(qtySpan.textContent) + delta;
             if (currentQty < 0) currentQty = 0;
             qtySpan.textContent = currentQty;
-            calculateTotal();
+            updateRealtimeSummary();
         }
 
-        function calculateTotal() {
+        function updateRealtimeSummary() {
             let total = 0;
+            let previewHtml = "";
+            let hasItem = false;
+
             const cards = document.querySelectorAll('.product-card');
             cards.forEach(card => {
+                const name = card.dataset.name;
                 const price = parseInt(card.dataset.price);
                 const qty = parseInt(card.querySelector('.qty').textContent);
-                total += price * qty;
+                
+                if (qty > 0) {
+                    hasItem = true;
+                    total += price * qty;
+                    previewHtml += `<div class="selected-item-row"><span>${name} x ${qty}개</span><span>${(price*qty).toLocaleString()}원</span></div>`;
+                }
             });
+
+            if (!hasItem) {
+                previewHtml = '<span style="color: #8b95a1;">선택된 상품이 없습니다.</span>';
+            }
+
+            document.getElementById('selected-preview').innerHTML = previewHtml;
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
