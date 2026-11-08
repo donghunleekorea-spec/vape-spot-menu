@@ -12,7 +12,7 @@
         header { background: #191f28; color: #ffffff; padding: 16px; text-align: center; font-size: 17px; font-weight: 700; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
         .notice-bar { background: #e8f3ff; color: #1b64da; padding: 10px 16px; font-size: 13px; font-weight: 600; text-align: center; border-bottom: 1px solid #d0e3ff; }
         
-        /* 1. 상단 카테고리 가로 스크롤 탭 바 */
+        /* 상단 카테고리 가로 스크롤 탭 바 */
         .category-tab-wrapper { position: sticky; top: 51px; background: #ffffff; z-index: 90; border-bottom: 1px solid #e5e8eb; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
         .category-tabs { display: flex; overflow-x: auto; white-space: nowrap; padding: 10px 12px; gap: 8px; scrollbar-width: none; }
         .category-tabs::-webkit-scrollbar { display: none; }
@@ -21,13 +21,15 @@
 
         .container { padding: 16px; max-width: 600px; margin: 0 auto; }
         
-        /* 2. 카테고리 섹션 및 세로 상품 목록 */
+        /* 카테고리 섹션 및 세로 상품 목록 */
         .category-section { display: none; }
         .category-section.active { display: block; }
         .category-title { font-size: 16px; font-weight: 700; margin: 0 0 12px 2px; color: #191f28; }
         
         .product-card { background: #ffffff; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.04); border: 1px solid #eaeef2; gap: 12px; }
-        .product-img { width: 64px; height: 64px; border-radius: 8px; object-fit: cover; background-color: #f2f4f6; flex-shrink: 0; border: 1px solid #e5e8eb; }
+        
+        /* 이미지 스타일 (클릭 가능 커서 표시) */
+        .product-img { width: 64px; height: 64px; border-radius: 8px; object-fit: cover; background-color: #f2f4f6; flex-shrink: 0; border: 1px solid #e5e8eb; cursor: pointer; }
         .product-info { flex: 1; min-width: 0; }
         .product-info h3 { margin: 0 0 4px 0; font-size: 14px; color: #333d4b; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .product-info p { margin: 0; font-size: 14px; color: #f04452; font-weight: 700; }
@@ -38,7 +40,7 @@
         .quantity-control button:active { background: #e5e8eb; }
         .quantity-control span { font-size: 14px; font-weight: 700; width: 20px; text-align: center; color: #191f28; }
         
-        /* 3. 하단 실시간 요약 및 주문 바 */
+        /* 하단 실시간 요약 및 주문 바 */
         .order-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid #e5e8eb; padding: 14px 20px; box-shadow: 0 -4px 16px rgba(0,0,0,0.08); max-width: 600px; margin: 0 auto; z-index: 99; }
         .selected-preview { max-height: 85px; overflow-y: auto; margin-bottom: 10px; font-size: 12px; color: #4e5968; border-bottom: 1px solid #f2f4f6; padding-bottom: 8px; }
         .selected-item-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
@@ -46,14 +48,20 @@
         .order-summary .total-val { color: #f04452; font-size: 18px; }
         .order-btn { width: 100%; background: #fee500; color: #191919; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; }
         .order-btn:active { background: #ebd200; }
+
+        /* 사진 확대 모달(팝업창) 스타일 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; padding: 20px; }
+        .modal-img { max-width: 90%; max-height: 70vh; border-radius: 12px; object-fit: contain; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .modal-title { color: #ffffff; margin-top: 16px; font-size: 16px; font-weight: 600; text-align: center; }
+        .modal-close { position: absolute; top: 20px; right: 20px; color: #ffffff; font-size: 32px; font-weight: bold; cursor: pointer; background: none; border: none; }
     </style>
 </head>
 <body>
 
     <header>전담스팟 정관점 - 전체 메뉴판</header>
-    <div class="notice-bar">💡 상단 탭을 눌러 종류별 상품 목록을 확인하실 수 있습니다.</div>
+    <div class="notice-bar">💡 제품 사진을 터치하시면 크게 확대해서 보실 수 있습니다.</div>
 
-    <!-- 가로로 배치된 카테고리 탭 (옆으로 스크롤 가능) -->
+    <!-- 가로로 배치된 카테고리 탭 -->
     <div class="category-tab-wrapper">
         <div class="category-tabs">
             <button class="tab-btn active" onclick="switchCategory('cat-30ml', this)">💨 30mL 액상</button>
@@ -67,12 +75,12 @@
 
     <div class="container">
 
-        <!-- 1. 30mL 액상 (세로 목록) -->
+        <!-- 1. 30mL 액상 -->
         <div id="cat-30ml" class="category-section active">
             <div class="category-title">💨 30mL 입호흡 액상 목록</div>
             
             <div class="product-card" data-name="알로에베라 (30mL 입호흡)" data-price="25000">
-                <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="알로에베라">
+                <img class="product-img" src="https://via.placeholder.com/400x400?text=알로에베라+30mL" alt="알로에베라 (30mL 입호흡)" onclick="openImageModal(this)">
                 <div class="product-info">
                     <h3>알로에베라 (청포도/알로에)</h3>
                     <p>25,000원</p>
@@ -85,7 +93,7 @@
             </div>
 
             <div class="product-card" data-name="아쿠아 멘솔 (30mL 입호흡)" data-price="25000">
-                <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="아쿠아 멘솔">
+                <img class="product-img" src="https://via.placeholder.com/400x400?text=아쿠아멘솔+30mL" alt="아쿠아 멘솔 (30mL 입호흡)" onclick="openImageModal(this)">
                 <div class="product-info">
                     <h3>아쿠아 멘솔 (강력한 순수 멘솔)</h3>
                     <p>25,000원</p>
@@ -98,7 +106,7 @@
             </div>
 
             <div class="product-card" data-name="샤인머스캣 (30mL 입호흡)" data-price="25000">
-                <img class="product-img" src="https://via.placeholder.com/100?text=30mL" alt="샤인머스캣">
+                <img class="product-img" src="https://via.placeholder.com/400x400?text=샤인머스캣+30mL" alt="샤인머스캣 (30mL 입호흡)" onclick="openImageModal(this)">
                 <div class="product-info">
                     <h3>샤인머스캣 (달콤 청포도향)</h3>
                     <p>25,000원</p>
@@ -111,12 +119,12 @@
             </div>
         </div>
 
-        <!-- 2. 100mL 액상 (세로 목록) -->
+        <!-- 2. 100mL 액상 -->
         <div id="cat-100ml" class="category-section">
             <div class="category-title">☁️ 100mL 폐호흡 액상 목록</div>
 
             <div class="product-card" data-name="알로에베라 (100mL 폐호흡)" data-price="35000">
-                <img class="product-img" src="https://via.placeholder.com/100?text=100mL" alt="알로에베라 폐호흡">
+                <img class="product-img" src="https://via.placeholder.com/400x400?text=알로에베라+100mL" alt="알로에베라 (100mL 폐호흡)" onclick="openImageModal(this)">
                 <div class="product-info">
                     <h3>알로에베라 대용량 (100mL)</h3>
                     <p>35,000원</p>
@@ -129,7 +137,7 @@
             </div>
 
             <div class="product-card" data-name="아이스 망고 (100mL 폐호흡)" data-price="35000">
-                <img class="product-img" src="https://via.placeholder.com/100?text=100mL" alt="아이스 망고">
+                <img class="product-img" src="https://via.placeholder.com/400x400?text=아이스망고+100mL" alt="아이스 망고 (100mL 폐호흡)" onclick="openImageModal(this)">
                 <div class="product-info">
                     <h3>아이스 망고 대용량 (100mL)</h3>
                     <p>35,000원</p>
@@ -142,12 +150,12 @@
             </div>
         </div>
 
-        <!-- 3. 디바이스 (세로 목록) -->
+        <!-- 3. 디바이스 -->
         <div id="cat-device" class="category-section">
             <div class="category-title">📱 디바이스 본체 목록</div>
 
             <div class="product-card" data-name="발라리안 MAX 디바이스" data-price="55000">
-                <img class="product-img" src="https://via.placeholder.com/100?text=DEVICE" alt="발라리안 MAX">
+                <img class="product-img" src="https://via.placeholder.com/400x400?text=발라리안+MAX" alt="발라리안 MAX 디바이스" onclick="openImageModal(this)">
                 <div class="product-info">
                     <h3>발라리안 MAX 풀세트</h3>
                     <p>55,000원</p>
@@ -161,7 +169,7 @@
             </div>
 
             <div class="product-card" data-name="젤로 (JELLO) 디바이스" data-price="48000">
-                <img class="product-img" src="https://via.placeholder.com/100?text=DEVICE" alt="젤로">
+                <img class="product-img" src="https://via.placeholder.com/400x400?text=젤로+JELLO" alt="젤로 (JELLO) 디바이스" onclick="openImageModal(this)">
                 <div class="product-info">
                     <h3>젤로 (JELLO) 디바이스</h3>
                     <p>48,000원</p>
@@ -175,12 +183,12 @@
             </div>
         </div>
 
-        <!-- 4. 일회용 전자담배 (세로 목록) -->
+        <!-- 4. 일회용 전자담배 -->
         <div id="cat-disposable" class="category-section">
             <div class="category-title">🔋 일회용 전자담배 목록</div>
 
             <div class="product-card" data-name="일회용 팟 9000퍼프 (아이스원)" data-price="20000">
-                <img class="product-img" src="https://via.placeholder.com/100?text=DISPOSABLE" alt="일회용 9000">
+                <img class="product-img" src="https://via.placeholder.com/400x400?text=9000퍼프+아이스원" alt="일회용 팟 9000퍼프 (아이스원)" onclick="openImageModal(this)">
                 <div class="product-info">
                     <h3>대용량 9000퍼프 - 아이스원</h3>
                     <p>20,000원</p>
@@ -193,12 +201,12 @@
             </div>
         </div>
 
-        <!-- 5. 무니코틴 (세로 목록) -->
+        <!-- 5. 무니코틴 -->
         <div id="cat-zeronic" class="category-section">
             <div class="category-title">🛡️ 무니코틴 제품 목록</div>
 
             <div class="product-card" data-name="무니코틴 알로에베라 (30mL)" data-price="25000">
-                <img class="product-img" src="https://via.placeholder.com/100?text=ZERO-NIC" alt="무니코틴 알로에">
+                <img class="product-img" src="https://via.placeholder.com/400x400?text=무니코틴+알로에베라" alt="무니코틴 알로에베라 (30mL)" onclick="openImageModal(this)">
                 <div class="product-info">
                     <h3>무니코틴 알로에베라 (30mL)</h3>
                     <p>25,000원</p>
@@ -212,12 +220,12 @@
             </div>
         </div>
 
-        <!-- 6. 코일/팟 (세로 목록) -->
+        <!-- 6. 코일/팟 -->
         <div id="cat-parts" class="category-section">
             <div class="category-title">⚙️ 코일 & 공팟 목록</div>
 
             <div class="product-card" data-name="발라리안 코일 (0.6ohm)" data-price="4000">
-                <img class="product-img" src="https://via.placeholder.com/100?text=PARTS" alt="발라리안 코일">
+                <img class="product-img" src="https://via.placeholder.com/400x400?text=발라리안+코일" alt="발라리안 코일 (0.6ohm)" onclick="openImageModal(this)">
                 <div class="product-info">
                     <h3>발라리안 코일 0.6ohm</h3>
                     <p>4,000원</p>
@@ -230,7 +238,7 @@
             </div>
 
             <div class="product-card" data-name="젤로 일체형 팟 (0.8ohm)" data-price="4500">
-                <img class="product-img" src="https://via.placeholder.com/100?text=PARTS" alt="젤로 팟">
+                <img class="product-img" src="https://via.placeholder.com/400x400?text=젤로+팟" alt="젤로 일체형 팟 (0.8ohm)" onclick="openImageModal(this)">
                 <div class="product-info">
                     <h3>젤로 일체형 팟 0.8ohm</h3>
                     <p>4,500원</p>
@@ -245,7 +253,7 @@
 
     </div>
 
-    <!-- 하단 실시간 통합 요약 및 주문 바 -->
+    <!-- 하단 실시간 요약 및 주문 바 -->
     <div class="order-bar">
         <div class="selected-preview" id="selected-preview">
             <span style="color: #8b95a1;">선택된 상품이 없습니다.</span>
@@ -257,10 +265,33 @@
         <button class="order-btn" onclick="sendOrder()">카카오톡으로 주문 내역 전송하기</button>
     </div>
 
+    <!-- 이미지 확대 보기 팝업(모달) -->
+    <div id="image-modal" class="modal" onclick="closeImageModal()">
+        <button class="modal-close" onclick="closeImageModal()">&times;</button>
+        <img id="modal-img" class="modal-img" src="" alt="확대 이미지">
+        <div id="modal-title" class="modal-title"></div>
+    </div>
+
     <script>
         try { Kakao.init('YOUR_KAKAO_JS_KEY'); } catch(e) {}
 
-        // 카테고리 탭 전환 함수
+        // 이미지 확대 모달 열기
+        function openImageModal(imgElement) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            const modalTitle = document.getElementById('modal-title');
+            
+            modal.style.display = 'flex';
+            modalImg.src = imgElement.src;
+            modalTitle.textContent = imgElement.alt;
+        }
+
+        // 이미지 확대 모달 닫기
+        function closeImageModal() {
+            document.getElementById('image-modal').style.display = 'none';
+        }
+
+        // 카테고리 탭 전환
         function switchCategory(catId, btnElement) {
             document.querySelectorAll('.category-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -269,7 +300,7 @@
             btnElement.classList.add('active');
         }
 
-        // 수량 변경 함수
+        // 수량 변경
         function changeQty(btn, delta) {
             const card = btn.closest('.product-card');
             const qtySpan = card.querySelector('.qty');
@@ -279,7 +310,7 @@
             updateRealtimeSummary();
         }
 
-        // 실시간 주문 내역 및 금액 업데이트 (카테고리와 무관하게 전체 선택 항목 계산)
+        // 실시간 요약 및 금액 계산
         function updateRealtimeSummary() {
             let total = 0;
             let previewHtml = "";
@@ -306,7 +337,7 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
-        // 카카오톡 주문서 전송 함수
+        // 주문서 전송
         function sendOrder() {
             let orderText = "[전담스팟 정관점 주문 내역서]\n--------------------\n";
             let hasItem = false;
