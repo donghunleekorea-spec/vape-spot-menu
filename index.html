@@ -3,46 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>전담스팟 - 상품 메뉴 및 주문서</title>
-    <!-- 카카오 SDK 로드 -->
+    <title>전담스팟 정관점 - 전체 상품 메뉴 및 주문서</title>
+    <!-- 카카오 SDK -->
     <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; padding-bottom: 120px; }
-        header { background: #212529; color: white; padding: 16px; text-align: center; font-size: 18px; font-weight: bold; }
-        .container { padding: 16px; max-width: 600px; margin: 0 auto; }
-        .category-title { font-size: 16px; font-weight: bold; margin: 20px 0 10px 4px; color: #495057; }
-        .product-card { background: white; border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .product-info h3 { margin: 0 0 4px 0; font-size: 15px; color: #212529; }
-        .product-info p { margin: 0; font-size: 14px; color: #e03131; font-weight: bold; }
-        .quantity-control { display: flex; align-items: center; gap: 10px; }
-        .quantity-control button { width: 32px; height: 32px; border: 1px solid #ced4da; background: white; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; }
-        .quantity-control span { font-size: 15px; font-weight: bold; width: 20px; text-align: center; }
-        .order-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #dee2e6; padding: 16px; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; }
-        .order-summary { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; font-weight: bold; }
-        .order-btn { width: 100%; background: #fee500; color: #191919; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; }
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 0; padding-bottom: 140px; color: #333; }
+        header { background: #191f28; color: #ffffff; padding: 18px 16px; text-align: center; font-size: 18px; font-weight: 700; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .notice-bar { background: #e8f3ff; color: #1b64da; padding: 10px 16px; font-size: 13px; font-weight: 600; text-align: center; border-bottom: 1px solid #d0e3ff; }
+        .container { padding: 12px 16px; max-width: 600px; margin: 0 auto; }
+        .category-title { font-size: 16px; font-weight: 700; margin: 24px 0 10px 4px; color: #191f28; display: flex; align-items: center; gap: 6px; }
+        .product-card { background: #ffffff; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.04); border: 1px solid #eaeef2; }
+        .product-info h3 { margin: 0 0 4px 0; font-size: 15px; color: #333d4b; font-weight: 600; }
+        .product-info p { margin: 0; font-size: 14px; color: #f04452; font-weight: 700; }
+        .product-info .sub-text { font-size: 11px; color: #8b95a1; margin-top: 2px; font-weight: normal; }
+        .quantity-control { display: flex; align-items: center; gap: 8px; background: #f2f4f6; padding: 4px; border-radius: 8px; }
+        .quantity-control button { width: 30px; height: 30px; border: none; background: #ffffff; border-radius: 6px; font-size: 16px; font-weight: bold; color: #4e5968; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .quantity-control button:active { background: #e5e8eb; }
+        .quantity-control span { font-size: 14px; font-weight: 700; width: 22px; text-align: center; color: #191f28; }
+        .order-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid #e5e8eb; padding: 16px 20px; box-shadow: 0 -4px 16px rgba(0,0,0,0.08); max-width: 600px; margin: 0 auto; z-index: 99; }
+        .order-summary { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; font-weight: 700; color: #191f28; }
+        .order-summary .total-val { color: #f04452; font-size: 18px; }
+        .order-btn { width: 100%; background: #fee500; color: #191919; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; }
+        .order-btn:active { background: #ebd200; }
     </style>
 </head>
 <body>
 
-    <header>전담스팟 통합 메뉴판</header>
+    <header>전담스팟 정관점 - 전체 메뉴판</header>
+    <div class="notice-bar">💡 수량을 선택하신 후 하단 전송 버튼을 누르면 카카오톡 주문서가 자동 작성됩니다.</div>
 
     <div class="container" id="menu-container">
-        <!-- 카테고리 1: 액상 -->
-        <div class="category-title">💨 입호흡 / 폐호흡 액상</div>
-        <div class="product-card" data-name="알로에베라 액상" data-price="25000">
+
+        <!-- 1. 입호흡 액상 (30ml) -->
+        <div class="category-title">💨 입호흡 액상 (MTL / 30ml)</div>
+        
+        <div class="product-card" data-name="알로에베라 (입호흡)" data-price="25000">
             <div class="product-info">
-                <h3>알로에베라 액상</h3>
-                <p>25,000원</p>
-            </div>
-            <div class="quantity-control">
-                <button onclick="changeQty(this, -1)">-</button>
-                <span class="qty">0</span>
-                <button onclick="changeQty(this, 1)">+</button>
-            </div>
-        </div>
-        <div class="product-card" data-name="멘솔 하이퍼 액상" data-price="25000">
-            <div class="product-info">
-                <h3>멘솔 하이퍼 액상</h3>
+                <h3>알로에베라 (시원한 청포도/알로에)</h3>
                 <p>25,000원</p>
             </div>
             <div class="quantity-control">
@@ -52,12 +50,129 @@
             </div>
         </div>
 
-        <!-- 카테고리 2: 기기 -->
-        <div class="category-title">🔋 전자기기 (디바이스)</div>
-        <div class="product-card" data-name="발라맥스 기기 세트" data-price="48000">
+        <div class="product-card" data-name="아쿠아 멘솔 (입호흡)" data-price="25000">
             <div class="product-info">
-                <h3>발라맥스 기기 세트</h3>
+                <h3>아쿠아 멘솔 (강력한 순수 멘솔)</h3>
+                <p>25,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card" data-name="아이스 자몽파인 (입호흡)" data-price="25000">
+            <div class="product-info">
+                <h3>아이스 자몽파인 (상큼 시원 과일 mix)</h3>
+                <p>25,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card" data-name="샤인머스캣 (입호흡)" data-price="25000">
+            <div class="product-info">
+                <h3>샤인머스캣 (달콤한 청포도향)</h3>
+                <p>25,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card" data-name="클래식 시가 (입호흡)" data-price="25000">
+            <div class="product-info">
+                <h3>클래식 시가 (구수한 묵직한 연초향)</h3>
+                <p>25,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <!-- 2. 폐호흡 액상 (60ml) -->
+        <div class="category-title">☁️ 폐호흡 액상 (DTL / 60ml)</div>
+
+        <div class="product-card" data-name="알로에베라 (폐호흡)" data-price="30000">
+            <div class="product-info">
+                <h3>알로에베라 모드액상 (60ml)</h3>
+                <p>30,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card" data-name="아이스 망고 (폐호흡)" data-price="30000">
+            <div class="product-info">
+                <h3>아이스 망고 모드액상 (60ml)</h3>
+                <p>30,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <!-- 3. 일회용 전자담배 -->
+        <div class="category-title">🔋 일회용 전자담배 (대용량 팟)</div>
+
+        <div class="product-card" data-name="일회용 팟 9000퍼프 (아이스원)" data-price="20000">
+            <div class="product-info">
+                <h3>대용량 9000퍼프 - 아이스원</h3>
+                <p>20,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card" data-name="일회용 팟 9000퍼프 (퍼플베리)" data-price="20000">
+            <div class="product-info">
+                <h3>대용량 9000퍼프 - 퍼플베리</h3>
+                <p>20,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <!-- 4. 기기 디바이스 -->
+        <div class="category-title">📱 기기 디바이스 본체</div>
+
+        <div class="product-card" data-name="발라리안 MAX 디바이스" data-price="55000">
+            <div class="product-info">
+                <h3>발라리안 MAX 풀세트</h3>
+                <p>55,000원</p>
+                <div class="sub-text">배터리 대용량 / 풍부한 맛표현</div>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card" data-name="젤로 (JELLO) 디바이스" data-price="48000">
+            <div class="product-info">
+                <h3>젤로 (JELLO) 디바이스</h3>
                 <p>48,000원</p>
+                <div class="sub-text">누수 제로 / 타격감 최상</div>
             </div>
             <div class="quantity-control">
                 <button onclick="changeQty(this, -1)">-</button>
@@ -66,11 +181,25 @@
             </div>
         </div>
 
-        <!-- 카테고리 3: 소모품 -->
-        <div class="category-title">⚙️ 코일 및 소모품</div>
-        <div class="product-card" data-name="교체용 코일 (0.6ohm)" data-price="4000">
+        <div class="product-card" data-name="아스몬 (ASMON) 디바이스" data-price="50000">
             <div class="product-info">
-                <h3>교체용 코일 (0.6ohm)</h3>
+                <h3>아스몬 (ASMON) 디바이스</h3>
+                <p>50,000원</p>
+                <div class="sub-text">아스베이프 x 몬스터즈 콜라보</div>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <!-- 5. 소모품 (코일 / 카트리지 / 팟) -->
+        <div class="category-title">⚙️ 코일 & 공팟 소모품</div>
+
+        <div class="product-card" data-name="발라리안 교체용 코일 (0.6ohm)" data-price="4000">
+            <div class="product-info">
+                <h3>발라리안 코일 0.6ohm (1개)</h3>
                 <p>4,000원</p>
             </div>
             <div class="quantity-control">
@@ -79,22 +208,56 @@
                 <button onclick="changeQty(this, 1)">+</button>
             </div>
         </div>
+
+        <div class="product-card" data-name="발라리안 교체용 코일 (1.0ohm)" data-price="4000">
+            <div class="product-info">
+                <h3>발라리안 코일 1.0ohm (1개)</h3>
+                <p>4,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card" data-name="젤로 일체형 팟 (0.8ohm)" data-price="4500">
+            <div class="product-info">
+                <h3>젤로 일체형 팟 0.8ohm (1개)</h3>
+                <p>4,500원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card" data-name="아스몬 팟 카트리지" data-price="5000">
+            <div class="product-info">
+                <h3>아스몬 공팟 카트리지 (1개)</h3>
+                <p>5,000원</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="changeQty(this, -1)">-</button>
+                <span class="qty">0</span>
+                <button onclick="changeQty(this, 1)">+</button>
+            </div>
+        </div>
+
     </div>
 
-    <!-- 하단 고정 주문 바 -->
+    <!-- 하단 고정 주문 금액 및 전송 바 -->
     <div class="order-bar">
         <div class="order-summary">
-            <span>총 주문 금액</span>
-            <span id="total-price">0원</span>
+            <span>총 선택 금액</span>
+            <span class="total-val" id="total-price">0원</span>
         </div>
         <button class="order-btn" onclick="sendOrder()">카카오톡으로 주문 내역 전송하기</button>
     </div>
 
     <script>
-        // 카카오 SDK 초기화 (본인의 자바스크립트 키 입력 필요)
-        try {
-            Kakao.init('YOUR_KAKAO_JS_KEY');
-        } catch(e) {}
+        try { Kakao.init('YOUR_KAKAO_JS_KEY'); } catch(e) {}
 
         function changeQty(btn, delta) {
             const card = btn.closest('.product-card');
@@ -117,7 +280,7 @@
         }
 
         function sendOrder() {
-            let orderText = "[전담스팟 주문 내역서]\n--------------------\n";
+            let orderText = "[전담스팟 정관점 주문 내역서]\n--------------------\n";
             let hasItem = false;
             let total = 0;
 
@@ -138,9 +301,8 @@
                 return;
             }
 
-            orderText += `--------------------\n총 결제금액: ${total.toLocaleString()}원`;
+            orderText += `--------------------\n총 결제 예정 금액: ${total.toLocaleString()}원`;
 
-            // 카카오톡 공유하기 또는 클립보드 복사 처리
             if (typeof Kakao !== 'undefined' && Kakao.isInitialized()) {
                 Kakao.Share.sendDefault({
                     objectType: 'text',
@@ -148,9 +310,10 @@
                     link: { mobileWebUrl: window.location.href, webUrl: window.location.href }
                 });
             } else {
-                // 카카오 SDK 미연동 시 클립보드 복사 백업
                 navigator.clipboard.writeText(orderText).then(() => {
-                    alert("주문 내역이 복사되었습니다! 카카오톡창에 붙여넣어 주세요.\n\n" + orderText);
+                    alert("주문 내역이 복사되었습니다!\n카카오톡 대화창에 붙여넣기(Ctrl+V)를 해 주세요.\n\n" + orderText);
+                }).catch(() => {
+                    alert(orderText);
                 });
             }
         }
