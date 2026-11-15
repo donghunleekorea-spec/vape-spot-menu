@@ -337,7 +337,7 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
-        // 주문서 전송 (클립보드 복사 및 카카오톡 채널 전송 연동)
+       // 주문서 전송 및 배송 정보 입력 팝업
 function sendOrder() {
     let orderText = "[전담스팟 정관점 주문 내역서]\n--------------------\n";
     let hasItem = false;
@@ -360,11 +360,28 @@ function sendOrder() {
         return;
     }
     
-    orderText += `--------------------\n총 결제 예정 금액: ${total.toLocaleString()}원`;
+    orderText += `--------------------\n총 결제 예정 금액: ${total.toLocaleString()}원\n\n`;
 
-    // 클립보드 복사 후 안내 팝업 및 카카오톡 대화창 이동
+    // 손님에게 배송 정보 입력받기 (간편 입력을 위해 기본 주소 예시 제공)
+    let address = prompt("1. 배송지 주소를 입력해 주세요:\n(예: 정관읍 곰내로...)", "부산 기장군 정관읍 ");
+    if (address === null) return; // 취소 누르면 중단
+
+    let name = prompt("2. 성함을 입력해 주세요:");
+    if (name === null) return;
+
+    let phone = prompt("3. 연락처를 입력해 주세요:", "010-");
+    if (phone === null) return;
+
+    // 최종 주문서 조합
+    orderText += `[배송 정보]\n`;
+    orderText += `1. 배송지 주소: ${address}\n`;
+    orderText += `2. 성함: ${name}\n`;
+    orderText += `3. 연락처: ${phone}\n`;
+    orderText += `4. 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점`;
+
+    // 클립보드 복사 및 안내
     navigator.clipboard.writeText(orderText).then(() => {
-        alert("주문 내역이 복사되었습니다!\n채팅창에 붙여넣기(길게 눌러 붙여넣기)를 해 주세요.\n\n" + orderText);
+        alert("주문서가 완성되어 복사되었습니다!\n카카오톡 채팅창에 붙여넣기(길게 누르기)를 해 주세요.\n\n" + orderText);
     }).catch(() => {
         alert(orderText);
     });
