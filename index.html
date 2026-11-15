@@ -337,47 +337,38 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
-        // 주문서 전송
-        function sendOrder() {
-            let orderText = "[전담스팟 정관점 주문 내역서]\n--------------------\n";
-            let hasItem = false;
-            let total = 0;
-
-            const cards = document.querySelectorAll('.product-card');
-            cards.forEach(card => {
-                const name = card.dataset.name;
-                const price = parseInt(card.dataset.price);
-                const qty = parseInt(card.querySelector('.qty').textContent);
-                if (qty > 0) {
-                    hasItem = true;
-                    orderText += `• ${name} x ${qty}개 (${(price*qty).toLocaleString()}원)\n`;
-                    total += price * qty;
-                }
-            });
-
-            if (!hasItem) {
-                alert("선택된 상품이 없습니다. 수량을 선택해 주세요.");
-                return;
-            }
-
-            orderText += `--------------------\n총 결제 예정 금액: ${total.toLocaleString()}원`;
-
-            if (typeof Kakao !== 'undefined' && Kakao.isInitialized()) {
-                Kakao.Share.sendDefault({
-                    objectType: 'text',
-                    text: orderText,
-                    link: { mobileWebUrl: window.location.href, webUrl: window.location.href }
-                });
-            } else {
-                navigator.clipboard.writeText(orderText).then(() => {
-                    alert("주문 내역이 복사되었습니다!\n카카오톡 대화창에 붙여넣기(Ctrl+V)를 해 주세요.\n\n" + orderText);
-                }).catch(() => {
-                    alert(orderText);
-                });
-            }
+        // 주문서 전송 (클립보드 복사 및 카카오톡 채널 전송 연동)
+function sendOrder() {
+    let orderText = "[전담스팟 정관점 주문 내역서]\n--------------------\n";
+    let hasItem = false;
+    let total = 0;
+    
+    const cards = document.querySelectorAll('.product-card');
+    cards.forEach(card => {
+        const name = card.dataset.name;
+        const price = parseInt(card.dataset.price);
+        const qty = parseInt(card.querySelector('.qty').textContent);
+        if (qty > 0) {
+            hasItem = true;
+            orderText += `• ${name} x ${qty}개 (${(price*qty).toLocaleString()}원)\n`;
+            total += price * qty;
         }
-        // 카카오 SDK 초기화
-Kakao.init('203877b3619417daacc9a9727790d41b');
+    });
+
+    if (!hasItem) {
+        alert("선택된 상품이 없습니다. 수량을 선택해 주세요.");
+        return;
+    }
+    
+    orderText += `--------------------\n총 결제 예정 금액: ${total.toLocaleString()}원`;
+
+    // 클립보드 복사 후 안내 팝업 및 카카오톡 대화창 이동
+    navigator.clipboard.writeText(orderText).then(() => {
+        alert("주문 내역이 복사되었습니다!\n채팅창에 붙여넣기(길게 눌러 붙여넣기)를 해 주세요.\n\n" + orderText);
+    }).catch(() => {
+        alert(orderText);
+    });
+}
     </script>
 </body>
 </html>
