@@ -392,7 +392,7 @@ function sendOrder() {
     });
 }
 
-// 주문서 전송 함수 (연락처 자동 하이픈 포맷팅 기능 포함)
+// 주문서 전송 함수 (기존 prompt 방식 유지 + 연락처 자동 하이픈 포맷팅 적용)
 function sendOrder() {
     let orderText = "전담스팟 정관점입니다.\n고객님께서 주문하신 내역은 아래와 같습니다.\n\n[주문 내역]\n--------------------\n";
     let hasItem = false;
@@ -425,36 +425,39 @@ function sendOrder() {
     let address = "";
     let name = "";
     let phone = "";
+    let formattedPhone = "";
 
     while (!isInfoCorrect) {
         // 2단계: 주소, 이름, 연락처 입력받기
         address = prompt("1. 배송지 주소를 입력해 주세요:\n(예: 정관읍 곰내로...)", "부산 기장군 정관읍 ");
-        if (address === null) return;
+        if (address === null) return; // 취소 시 중단
 
         name = prompt("2. 주문자 성함을 입력해 주세요:");
         if (name === null) return;
 
-        let rawPhone = prompt("3. 연락처를 입력해 주세요:\n(- 없이 숫자만 적으셔도 됩니다)", "010");
-        if (rawPhone === null) return;
+        phone = prompt("3. 연락처를 입력해 주세요:\n(- 없이 숫자만 적으셔도 됩니다)", "010");
+        if (phone === null) return;
 
         // 연락처 자동 포맷팅 (010-XXXX-XXXX 형식으로 변환)
-        phone = formatPhoneNumber(rawPhone);
+        formattedPhone = formatPhoneNumber(phone);
 
-        // 3단계: 입력한 정보가 맞는지 최종 확인
+        // 3단계: 입력한 정보가 맞는지 최종 확인 (하이픈이 적용된 번호로 표시)
         let checkMsg = "[입력하신 정보 확인]\n\n" +
                        `• 배송지 주소: ${address}\n` +
                        `• 주문자 이름: ${name}\n` +
-                       `• 연락처: ${phone}\n\n` +
+                       `• 연락처: ${formattedPhone}\n\n` +
                        "작성하신 정보가 맞습니까?\n\n[확인] 예 (주문서 복사)\n[취소] 아니오 (정보 다시 입력)";
         
         isInfoCorrect = confirm(checkMsg);
+        
+        // '아니오'를 누르면 반복문이 다시 돌면서 처음부터 재입력 가능
     }
 
     // 최종 주문서 완성 (주문 내역 + 배송 정보 + 결제계좌)
     let finalOrderText = orderText + "\n\n[배송 정보]\n" +
         `• 배송지 주소: ${address}\n` +
         `• 주문자 이름: ${name}\n` +
-        `• 연락처: ${phone}\n` +
+        `• 연락처: ${formattedPhone}\n` +
         `• 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점\n\n` +
         `확인을 누르시면 해당내용 복사되며 카카오톡 채팅방에 붙여넣기 해주십시오.`;
 
@@ -468,17 +471,14 @@ function sendOrder() {
 
 // 연락처를 010-XXXX-XXXX 형식으로 예쁘게 다듬어주는 함수
 function formatPhoneNumber(input) {
-    // 숫자만 추출
-    let numbers = input.replace(/[^0-9]/g, '');
+    let numbers = input.replace(/[^0-9]/g, ''); // 숫자만 추출
     
-    // 번호 길이에 따라 하이픈 자동 삽입
     if (numbers.length === 11) {
         return numbers.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
     } else if (numbers.length === 10) {
         return numbers.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
     } else {
-        // 형식이 맞지 않으면 입력한 그대로 반환
-        return input;
+        return input; // 형식이 맞지 않으면 입력한 그대로 반환
     }
 }
 
