@@ -337,7 +337,7 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
-// 주문서 전송 함수 (최종 복사 후 창 닫기 기능 추가)
+// 주문서 전송 함수 (클립보드 복사 및 상단 X 버튼 안내 방식)
 function sendOrder() {
     let orderText = "전담스팟 정관점입니다.\n고객님께서 주문하신 내역은 아래와 같습니다.\n\n[주문 내역]\n--------------------\n";
     let hasItem = false;
@@ -391,7 +391,7 @@ function sendOrder() {
                        `• 배송지 주소: ${address}\n` +
                        `• 주문자 이름: ${name}\n` +
                        `• 연락처: ${formattedPhone}\n\n` +
-                       "작성하신 정보가 맞습니까?\n\n[확인] 예 (주문서 복사 및 완료)\n[취소] 아니오 (정보 다시 입력)";
+                       "작성하신 정보가 맞습니까?\n\n[확인] 예 (주문서 복사)\n[취소] 아니오 (정보 다시 입력)";
         
         isInfoCorrect = confirm(checkMsg);
     }
@@ -404,18 +404,11 @@ function sendOrder() {
         `• 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점\n\n` +
         `확인을 누르시면 해당내용 복사되며 카카오톡 채팅방에 붙여넣기 해주십시오.`;
 
-    // 클립보드 복사 실행 후 토스트 메시지 출력 및 창 닫기
+    // 클립보드 복사 실행 및 명확한 안내 메시지 출력
     navigator.clipboard.writeText(finalOrderText).then(() => {
-        showToast("📋 주문서가 복사되었습니다!\n카카오톡 채팅방에 붙여넣기 해주십시오.");
-        
-        // 복사 완료 후 1.5초 뒤에 브라우저 창 닫기 시도 (카카오톡 채팅방으로 복귀)
-        setTimeout(() => {
-            window.close();
-        }, 1500);
-
+        showToast("📋 주문서가 복사되었습니다!\n\n상단의 [X] 버튼을 눌러 카카오톡 채팅방으로 돌아간 뒤 붙여넣기 해주세요.");
     }).catch(() => {
         alert("주문서 내용이 복사되었습니다. 카카오톡 채팅방에 붙여넣기 해 주세요.");
-        window.close();
     });
 }
 
@@ -432,7 +425,7 @@ function formatPhoneNumber(input) {
     }
 }
 
-// 화면 하단에 부드럽게 뜨는 안내 메시지(토스트) 함수
+// 화면 하단에 부드럽게 뜨는 안내 메시지(토스트) 함수 (조금 더 길게 유지)
 function showToast(message) {
     let existingToast = document.getElementById('toast-msg');
     if (existingToast) existingToast.remove();
@@ -445,26 +438,27 @@ function showToast(message) {
         bottom: 15%;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.9);
+        background: rgba(0, 0, 0, 0.95);
         color: white;
-        padding: 16px 24px;
-        border-radius: 10px;
+        padding: 18px 24px;
+        border-radius: 12px;
         font-size: 15px;
         font-weight: 500;
         z-index: 99999;
         text-align: center;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         max-width: 90%;
-        line-height: 1.5;
+        line-height: 1.6;
         word-break: keep-all;
     `;
     document.body.appendChild(toast);
 
+    // 메시지를 손님이 충분히 읽을 수 있도록 5초간 유지
     setTimeout(() => {
         toast.style.transition = "opacity 0.5s ease";
         toast.style.opacity = "0";
         setTimeout(() => toast.remove(), 500);
-    }, 1500);
+    }, 5000);
 }
     </script>
 </body>
