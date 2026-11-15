@@ -416,11 +416,13 @@
                 isInfoCorrect = confirm(checkMsg);
             }
 
-            // 최종 주문서 완성 (결제계좌 및 안내 문구 제외)
+            // 최종 주문서 완성
             pendingFinalOrderText = orderText + "\n\n[배송 정보]\n" +
                 `• 배송지 주소: ${address.trim()}\n` +
                 `• 주문자 이름: ${name.trim()}\n` +
-                `• 연락처: ${formattedPhone}`;
+                `• 연락처: ${formattedPhone}\n` +
+                `• 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점\n\n` +
+                `확인을 누르시면 해당내용 복사되며 카카오톡 채팅방에 붙여넣기 해주십시오.`;
 
             // 클립보드 복사 시도
             if (navigator.clipboard && navigator.clipboard.writeText) {
