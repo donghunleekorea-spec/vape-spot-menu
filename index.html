@@ -337,7 +337,7 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
-       // 주문서 전송 및 화면 안내 메시지 팝업 방식
+       // 주문서 전송 및 최종 확인 팝업 방식
 function sendOrder() {
     let orderText = "[전담스팟 정관점 주문 내역서]\n--------------------\n";
     let hasItem = false;
@@ -362,27 +362,31 @@ function sendOrder() {
     
     orderText += `--------------------\n총 결제 예정 금액: ${total.toLocaleString()}원\n\n`;
 
-    // 배송 정보 입력받기
+    // 1. 배송지 주소 입력
     let address = prompt("1. 배송지 주소를 입력해 주세요:\n(예: 정관읍 곰내로...)", "부산 기장군 정관읍 ");
     if (address === null) return;
 
-    let name = prompt("2. 성함을 입력해 주세요:");
+    // 2. 성함 입력
+    let name = prompt("2. 주문자 성함을 입력해 주세요:");
     if (name === null) return;
 
+    // 3. 연락처 입력
     let phone = prompt("3. 연락처를 입력해 주세요:", "010-");
     if (phone === null) return;
 
-    // 최종 주문서 조합
+    // 최종 주문서 조합 (배송 정보 및 결제계좌 포함)
     orderText += `[배송 정보]\n`;
-    orderText += `1. 배송지 주소: ${address}\n`;
-    orderText += `2. 성함: ${name}\n`;
-    orderText += `3. 연락처: ${phone}\n`;
-    
-    // 클립보드 복사 실행 (모바일 브라우저 충돌 방지 방식)
+    orderText += `• 배송지 주소: ${address}\n`;
+    orderText += `• 주문자 이름: ${name}\n`;
+    orderText += `• 연락처: ${phone}\n`;
+    orderText += `• 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점`;
+
+    // 클립보드 복사 실행 및 최종 내용 보여주기
     navigator.clipboard.writeText(orderText).then(() => {
-        showToast("📋 주문서가 복사되었습니다! 채팅창을 꾹 눌러 '붙여넣기' 하세요.");
+        showToast("📋 주문서와 배송 정보가 복사되었습니다!\n카톡 채팅방에 붙여넣기 해주세요.");
     }).catch(() => {
-        prompt("아래 내용을 복사해서 채팅창에 붙여넣어 주세요:", orderText);
+        // 복사 실패 시 전체 내용 확인 팝업
+        prompt("아래 내용을 복사해서 카톡 채팅방에 붙여넣어 주세요:\n\n" + orderText);
     });
 }
 
@@ -393,21 +397,23 @@ function showToast(message) {
 
     let toast = document.createElement('div');
     toast.id = 'toast-msg';
-    toast.textContent = message;
+    toast.innerHTML = message.replace(/\n/g, '<br>');
     toast.style.cssText = `
         position: fixed;
-        bottom: 20%;
+        bottom: 15%;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.85);
+        background: rgba(0, 0, 0, 0.9);
         color: white;
-        padding: 14px 20px;
-        border-radius: 8px;
-        font-size: 14px;
+        padding: 16px 24px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 500;
         z-index: 99999;
         text-align: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.4);
         max-width: 90%;
+        line-height: 1.5;
         word-break: keep-all;
     `;
     document.body.appendChild(toast);
@@ -416,7 +422,7 @@ function showToast(message) {
         toast.style.transition = "opacity 0.5s ease";
         toast.style.opacity = "0";
         setTimeout(() => toast.remove(), 500);
-    }, 3000);
+    }, 4000);
 }
     </script>
 </body>
