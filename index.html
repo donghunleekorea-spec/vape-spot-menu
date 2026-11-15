@@ -337,7 +337,7 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
-      // 주문서 전송 함수 (요청하신 안내 문구 적용 및 중복 팝업 제거)
+    // 주문서 전송 함수 (1단계: 선택 목록 최종 정리 확인 ➔ 2단계: 배송 정보 입력)
 function sendOrder() {
     let orderText = "전담스팟 정관점입니다.\n고객님께서 주문하신 내역은 아래와 같습니다.\n\n[주문 내역]\n--------------------\n";
     let hasItem = false;
@@ -360,33 +360,34 @@ function sendOrder() {
         return;
     }
     
-    orderText += `--------------------\n총 결제 예정 금액: ${total.toLocaleString()}원\n\n`;
+    orderText += `--------------------\n총 결제 예정 금액: ${total.toLocaleString()}원`;
 
-    // 1. 배송지 주소 입력
+    // 1단계: 선택한 목록과 가격을 최종 정리해서 보여주기
+    let confirmOrder = confirm(orderText + "\n\n[확인]을 누르시면 배송지 정보를 입력합니다.");
+    if (!confirmOrder) return; // 취소 누르면 중단
+
+    // 2단계: 주소, 이름, 연락처 입력받기
     let address = prompt("1. 배송지 주소를 입력해 주세요:\n(예: 정관읍 곰내로...)", "부산 기장군 정관읍 ");
     if (address === null) return;
 
-    // 2. 성함 입력
     let name = prompt("2. 주문자 성함을 입력해 주세요:");
     if (name === null) return;
 
-    // 3. 연락처 입력
     let phone = prompt("3. 연락처를 입력해 주세요:", "010-");
     if (phone === null) return;
 
-    // 최종 주문서 조합 (배송 정보 및 결제계좌 포함)
-    orderText += `[배송 정보]\n`;
-    orderText += `• 배송지 주소: ${address}\n`;
-    orderText += `• 주문자 이름: ${name}\n`;
-    orderText += `• 연락처: ${phone}\n`;
-    orderText += `• 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점\n\n`;
-    orderText += `확인을 누르시면 해당내용 복사되며 카카오톡 채팅방에 붙여넣기 해주십시오.`;
+    // 최종 주문서 완성 (주문 내역 + 배송 정보 + 결제계좌)
+    let finalOrderText = orderText + "\n\n[배송 정보]\n" +
+        `• 배송지 주소: ${address}\n` +
+        `• 주문자 이름: ${name}\n` +
+        `• 연락처: ${phone}\n` +
+        `• 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점\n\n` +
+        `확인을 누르시면 해당내용 복사되며 카카오톡 채팅방에 붙여넣기 해주십시오.`;
 
-    // 클립보드 복사 실행 및 하단 토스트 메시지 출력 (추가 팝업 제거)
-    navigator.clipboard.writeText(orderText).then(() => {
+    // 클립보드 복사 실행 및 하단 안내 메시지 출력
+    navigator.clipboard.writeText(finalOrderText).then(() => {
         showToast("📋 주문서가 복사되었습니다!\n카카오톡 채팅방에 붙여넣기 해주십시오.");
     }).catch(() => {
-        // 복사 차단 시에만 최소한의 안내 팝업 표시
         alert("주문서 내용이 복사되었습니다. 카카오톡 채팅방에 붙여넣기 해 주세요.");
     });
 }
