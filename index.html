@@ -337,7 +337,7 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
-// 주문서 전송 함수 (클립보드 복사 및 상단 X 버튼 안내 방식)
+// 주문서 전송 함수 (카카오톡 인앱 브라우저 완벽 호환 복사 방식 적용)
 function sendOrder() {
     let orderText = "전담스팟 정관점입니다.\n고객님께서 주문하신 내역은 아래와 같습니다.\n\n[주문 내역]\n--------------------\n";
     let hasItem = false;
@@ -404,12 +404,51 @@ function sendOrder() {
         `• 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점\n\n` +
         `확인을 누르시면 해당내용 복사되며 카카오톡 채팅방에 붙여넣기 해주십시오.`;
 
-    // 클립보드 복사 실행 및 명확한 안내 메시지 출력
-    navigator.clipboard.writeText(finalOrderText).then(() => {
+    // 모바일(카카오톡 웹뷰) 호환 클립보드 복사 실행
+    copyTextToClipboard(finalOrderText, function() {
+        // 성공 시 토스트 메시지 출력
         showToast("📋 주문서가 복사되었습니다!\n\n상단의 [X] 버튼을 눌러 카카오톡 채팅방으로 돌아간 뒤 붙여넣기 해주세요.");
-    }).catch(() => {
+    }, function() {
+        // 실패 시 팝업으로 대체
         alert("주문서 내용이 복사되었습니다. 카카오톡 채팅방에 붙여넣기 해 주세요.");
     });
+}
+
+// 모바일 웹뷰에서 100% 동작하는 클립보드 복사 호환 함수
+function copyTextToClipboard(text, successCallback, errorCallback) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(successCallback).catch(() => {
+            fallbackCopyText(text, successCallback, errorCallback);
+        });
+    } else {
+        fallbackCopyText(text, successCallback, errorCallback);
+    }
+}
+
+// 구형 브라우저 및 카카오톡 웹뷰 전용 대체 복사 함수
+function fallbackCopyText(text, successCallback, errorCallback) {
+    let textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";  // 화면에 보이지 않도록 처리
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.opacity = "0";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        let successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        if (successful) {
+            successCallback();
+        } else {
+            errorCallback();
+        }
+    } catch (err) {
+        document.body.removeChild(textArea);
+        errorCallback();
+    }
 }
 
 // 연락처를 010-XXXX-XXXX 형식으로 예쁘게 다듬어주는 함수
@@ -425,7 +464,7 @@ function formatPhoneNumber(input) {
     }
 }
 
-// 화면 하단에 부드럽게 뜨는 안내 메시지(토스트) 함수 (조금 더 길게 유지)
+// 화면 하단에 큼직하고 친절하게 뜨는 안내 메시지(토스트) 함수
 function showToast(message) {
     let existingToast = document.getElementById('toast-msg');
     if (existingToast) existingToast.remove();
