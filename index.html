@@ -349,7 +349,7 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
-       // 주문서 전송 함수
+        // 주문서 전송 함수
         function sendOrder() {
             let orderText = "전담스팟 정관점입니다.\n고객님께서 주문하신 내역은 아래와 같습니다.\n\n[주문 내역]\n--------------------\n";
             let hasItem = false;
@@ -416,7 +416,7 @@
                 isInfoCorrect = confirm(checkMsg);
             }
 
-            // 최종 주문서 완성 (연락처까지만 깔끔하게 복사)
+            // 최종 주문서 완성 (결제계좌 및 안내 문구 제외)
             pendingFinalOrderText = orderText + "\n\n[배송 정보]\n" +
                 `• 배송지 주소: ${address.trim()}\n` +
                 `• 주문자 이름: ${name.trim()}\n` +
@@ -433,6 +433,93 @@
             } else {
                 document.getElementById('copy-overlay').style.display = 'flex';
             }
+        }
+
+        // iOS 브라우저용 직접 터치 복사 실행 함수
+        function manualCopyOrder() {
+            document.getElementById('copy-overlay').style.display = 'none';
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(pendingFinalOrderText).then(() => {
+                    showToast("📋 주문서가 복사되었습니다!\n\n상단의 [X] 버튼을 눌러 카카오톡 채팅방으로 돌아간 뒤 붙여넣기 해주세요.");
+                }).catch(() => {
+                    fallbackCopyText(pendingFinalOrderText);
+                });
+            } else {
+                fallbackCopyText(pendingFinalOrderText);
+            }
+        }
+
+        // 구형 브라우저 대체 복사 함수
+        function fallbackCopyText(text) {
+            let textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.setAttribute("readonly", "");
+            textArea.style.position = "fixed";
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            textArea.setSelectionRange(0, 99999);
+
+            try {
+                document.execCommand('copy');
+                showToast("📋 주문서가 복사되었습니다!\n\n상단의 [X] 버튼을 눌러 카카오톡 채팅방으로 돌아간 뒤 붙여넣기 해주세요.");
+            } catch (err) {
+                prompt("아래 내용을 길게 눌러 전체 복사해 주세요:", text);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // 연락처를 010-XXXX-XXXX 형식으로 예쁘게 다듬어주는 함수
+        function formatPhoneNumber(input) {
+            let numbers = input.replace(/[^0-9]/g, '');
+            
+            if (numbers.length === 11) {
+                return numbers.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            } else if (numbers.length === 10) {
+                return numbers.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+            } else {
+                return input.trim();
+            }
+        }
+
+        // 화면 하단에 큼직하고 친절하게 뜨는 안내 메시지(토스트) 함수
+        function showToast(message) {
+            let existingToast = document.getElementById('toast-msg');
+            if (existingToast) existingToast.remove();
+
+            let toast = document.createElement('div');
+            toast.id = 'toast-msg';
+            toast.innerHTML = message.replace(/\n/g, '<br>');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 22%;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.95);
+                color: white;
+                padding: 18px 24px;
+                border-radius: 12px;
+                font-size: 15px;
+                font-weight: 500;
+                z-index: 99999;
+                text-align: center;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+                width: 88%;
+                max-width: 380px;
+                line-height: 1.6;
+                word-break: keep-all;
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transition = "opacity 0.5s ease";
+                toast.style.opacity = "0";
+                setTimeout(() => toast.remove(), 500);
+            }, 5500);
         }
     </script>
 </body>
