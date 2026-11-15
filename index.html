@@ -349,7 +349,7 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
-        // 주문서 전송 함수
+       // 주문서 전송 함수
         function sendOrder() {
             let orderText = "전담스팟 정관점입니다.\n고객님께서 주문하신 내역은 아래와 같습니다.\n\n[주문 내역]\n--------------------\n";
             let hasItem = false;
@@ -416,20 +416,17 @@
                 isInfoCorrect = confirm(checkMsg);
             }
 
-            // 최종 주문서 완성
+            // 최종 주문서 완성 (결제계좌 및 하단 안내 문구 제거됨)
             pendingFinalOrderText = orderText + "\n\n[배송 정보]\n" +
                 `• 배송지 주소: ${address.trim()}\n` +
                 `• 주문자 이름: ${name.trim()}\n` +
-                `• 연락처: ${formattedPhone}\n` +
-                `• 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점\n\n` +
-                `확인을 누르시면 해당내용 복사되며 카카오톡 채팅방에 붙여넣기 해주십시오.`;
+                `• 연락처: ${formattedPhone}`;
 
             // 클립보드 복사 시도
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(pendingFinalOrderText).then(() => {
                     showToast("📋 주문서가 복사되었습니다!\n\n상단의 [X] 버튼을 눌러 카카오톡 채팅방으로 돌아간 뒤 붙여넣기 해주세요.");
                 }).catch(() => {
-                    // iOS 등에서 confirm 직후 자동 복사가 차단된 경우 1터치 복사 버튼 표시
                     document.getElementById('copy-overlay').style.display = 'flex';
                 });
             } else {
