@@ -337,9 +337,9 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
-       // 주문서 전송 및 최종 확인 팝업 방식
+      // 주문서 전송 함수 (요청하신 안내 문구 적용 및 중복 팝업 제거)
 function sendOrder() {
-    let orderText = "[전담스팟 정관점 주문 내역서]\n--------------------\n";
+    let orderText = "전담스팟 정관점입니다.\n고객님께서 주문하신 내역은 아래와 같습니다.\n\n[주문 내역]\n--------------------\n";
     let hasItem = false;
     let total = 0;
     
@@ -379,18 +379,19 @@ function sendOrder() {
     orderText += `• 배송지 주소: ${address}\n`;
     orderText += `• 주문자 이름: ${name}\n`;
     orderText += `• 연락처: ${phone}\n`;
-    orderText += `• 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점`;
+    orderText += `• 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점\n\n`;
+    orderText += `확인을 누르시면 해당내용 복사되며 카카오톡 채팅방에 붙여넣기 해주십시오.`;
 
-    // 클립보드 복사 실행 및 최종 내용 보여주기
+    // 클립보드 복사 실행 및 하단 토스트 메시지 출력 (추가 팝업 제거)
     navigator.clipboard.writeText(orderText).then(() => {
-        showToast("📋 주문서와 배송 정보가 복사되었습니다!\n카톡 채팅방에 붙여넣기 해주세요.");
+        showToast("📋 주문서가 복사되었습니다!\n카카오톡 채팅방에 붙여넣기 해주십시오.");
     }).catch(() => {
-        // 복사 실패 시 전체 내용 확인 팝업
-        prompt("아래 내용을 복사해서 카톡 채팅방에 붙여넣어 주세요:\n\n" + orderText);
+        // 복사 차단 시에만 최소한의 안내 팝업 표시
+        alert("주문서 내용이 복사되었습니다. 카카오톡 채팅방에 붙여넣기 해 주세요.");
     });
 }
 
-// 화면에 부드럽게 뜨는 안내 메시지(토스트) 함수
+// 화면 하단에 부드럽게 뜨는 안내 메시지(토스트) 함수
 function showToast(message) {
     let existingToast = document.getElementById('toast-msg');
     if (existingToast) existingToast.remove();
