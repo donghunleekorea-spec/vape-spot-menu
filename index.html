@@ -377,7 +377,6 @@ function sendOrder() {
     orderText += `1. 배송지 주소: ${address}\n`;
     orderText += `2. 성함: ${name}\n`;
     orderText += `3. 연락처: ${phone}\n`;
-    orderText += `4. 결제계좌: 부산은행 101-2097-0859-05 전담스팟 정관점`;
 
     // 클립보드 복사 및 안내
     navigator.clipboard.writeText(orderText).then(() => {
