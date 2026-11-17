@@ -2454,7 +2454,7 @@
             document.getElementById('total-price').textContent = total.toLocaleString() + '원';
         }
 
-        // 주문서 전송 함수
+        // 주문서 전송 함수 (성인 인증 로직 추가)
         function sendOrder() {
             let orderText = "전담스팟 정관점입니다.\n고객님께서 주문하신 내역은 아래와 같습니다.\n\n[주문 내역]\n--------------------\n";
             let hasItem = false;
@@ -2479,10 +2479,55 @@
             
             orderText += `--------------------\n총 결제 예정 금액: ${total.toLocaleString()}원`;
 
-            // 1단계: 선택한 목록과 가격 최종 정리 확인
-            let confirmOrder = confirm(orderText + "\n\n[확인]을 누르시면 배송지 정보를 입력합니다.");
-            if (!confirmOrder) return;
+            // [성인 인증 단계] 주소 입력 전 생년월일 확인
+            let isAdultVerified = false;
+            let birthInput = "";
 
+            while (!isAdultVerified) {
+                birthInput = prompt("만19세 성인 고객만 주문이 가능합니다.\n생년월일을 먼저 기록해주세요.\n(형식: 00년 00월 00일)", "05년 03월 18일");
+                if (birthInput === null) return; // 취소 누를 경우 종료
+
+                if (!birthInput.trim()) {
+                    alert("생년월일을 입력해 주세요.");
+                    continue;
+                }
+
+                // 입력값에서 숫자만 추출 (예: "05년 03월 18일" -> "050318")
+                let numbers = birthInput.replace(/[^0-9]/g, '');
+                if (numbers.length < 6) {
+                    alert("올바른 생년월일 형식(00년 00월 00일)으로 입력해 주세요.");
+                    continue;
+                }
+
+                let yy = parseInt(numbers.substring(0, 2), 10);
+                let mm = parseInt(numbers.substring(2, 4), 10);
+                let dd = parseInt(numbers.substring(4, 6), 10);
+
+                // 연도 보정 (00~25년은 2000년대, 그 외는 1900년대)
+                let fullYear = (yy <= 26) ? (2000 + yy) : (1900 + yy);
+
+                // 만 나이 계산 로직
+                let today = new Date();
+                let birthDate = new Date(fullYear, mm - 1, dd);
+                
+                let age = today.getFullYear() - birthDate.getFullYear();
+                let m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                // 만 19세 미만 체크 (생년월일 기준 만 19세가 지나지 않은 경우)
+                if (age < 19) {
+                    alert("고객님은 만19세 미만으로 해당 제품 구매가 불가능합니다.");
+                    return; // 주문 차단 및 종료
+                } else {
+                    // 성인인 경우 확인되었습니다 알림 후 루프 탈출
+                    alert("확인되었습니다");
+                    isAdultVerified = true;
+                }
+            }
+
+            // [배송지 및 주문자 정보 입력 단계]
             let isInfoCorrect = false;
             let address = "";
             let name = "";
@@ -2490,7 +2535,6 @@
             let formattedPhone = "";
 
             while (!isInfoCorrect) {
-                // 2단계: 주소, 이름, 연락처 입력받기
                 address = prompt("1. 배송지 주소를 입력해 주세요:\n(예: 정관읍 곰내로...)", "부산 기장군 정관읍 ");
                 if (address === null) return;
                 if (!address.trim() || address.trim() === "부산 기장군 정관읍") {
@@ -2508,21 +2552,21 @@
                 phone = prompt("3. 연락처를 입력해 주세요:\n(- 없이 숫자만 적으셔도 됩니다)", "010");
                 if (phone === null) return;
 
-                // 연락처 자동 포맷팅 (010-XXXX-XXXX 형식으로 변환)
                 formattedPhone = formatPhoneNumber(phone);
 
-                // 3단계: 입력한 정보가 맞는지 최종 확인
                 let checkMsg = "[입력하신 정보 확인]\n\n" +
-                               `• 배송지 주소: ${address.trim()}\n` +
-                               `• 주문자 이름: ${name.trim()}\n` +
-                               `• 연락처: ${formattedPhone}\n\n` +
-                               "작성하신 정보가 맞습니까?\n\n[확인] 예 (주문서 복사)\n[취소] 아니오 (정보 다시 입력)";
+                            `• 생년월일: ${birthInput.trim()}\n` +
+                            `• 배송지 주소: ${address.trim()}\n` +
+                            `• 주문자 이름: ${name.trim()}\n` +
+                            `• 연락처: ${formattedPhone}\n\n` +
+                            "작성하신 정보가 맞습니까?\n\n[확인] 예 (주문서 복사)\n[취소] 아니오 (정보 다시 입력)";
                 
                 isInfoCorrect = confirm(checkMsg);
             }
 
-            // 최종 주문서 완성 (결제계좌 및 하단 안내 문구 제외)
-            pendingFinalOrderText = orderText + "\n\n[배송 정보]\n" +
+            // 최종 주문서 완성 (생년월일 및 배송 정보 포함)
+            pendingFinalOrderText = orderText + "\n\n[고객 정보]\n" +
+                `• 생년월일: ${birthInput.trim()}\n` +
                 `• 배송지 주소: ${address.trim()}\n` +
                 `• 주문자 이름: ${name.trim()}\n` +
                 `• 연락처: ${formattedPhone}`;
