@@ -68,4 +68,2702 @@
         .adult-box p { margin: 0 0 18px 0; font-size: 13.5px; color: #4e5968; line-height: 1.5; word-break: keep-all; }
         .birth-input-group { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 20px; }
         .birth-field { width: 58px; height: 46px; border: 1.5px solid #d1d6db; border-radius: 10px; font-size: 18px; font-weight: 700; text-align: center; color: #191f28; background: #f9fafb; outline: none; transition: border-color 0.2s ease, background 0.2s ease; }
-        .birth-field:focus { border-color: #191f28; background: #ffffff
+        .birth-field:focus { border-color: #191f28; background: #ffffff; }
+        .birth-unit { font-size: 15px; font-weight: 700; color: #333d4b; margin-right: 4px; }
+        .birth-unit:last-child { margin-right: 0; }
+        .adult-btn-group { display: flex; gap: 8px; }
+        .adult-cancel-btn { flex: 1; background: #f2f4f6; color: #4e5968; border: none; padding: 13px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .adult-confirm-btn { flex: 2; background: #fee500; color: #191919; border: none; padding: 13px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .adult-confirm-btn:active { background: #ebd200; }
+
+        /* iOS 브라우저용 1터치 복사 보조 창 */
+        .copy-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .copy-box { background: #ffffff; width: 100%; max-width: 340px; border-radius: 14px; padding: 22px 20px; text-align: center; box-shadow: 0 6px 24px rgba(0,0,0,0.3); }
+        .copy-box p { margin: 0 0 16px 0; font-size: 15px; font-weight: 600; color: #191f28; line-height: 1.5; }
+        .copy-action-btn { width: 100%; background: #fee500; color: #191919; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <header>전담스팟 정관점 - 전체 메뉴판</header>
+    <div class="notice-bar">💡 제품군 탭을 누르거나 검색창에서 원하는 제품을 찾아 수량을 선택해 주세요.</div>
+
+    <!-- 가로로 배치된 카테고리 탭 + 검색창 -->
+    <div class="category-tab-wrapper">
+        <div class="category-tabs">
+            <button type="button" class="tab-btn active" data-cat="cat-30ml" onclick="switchCategory('cat-30ml', this)">💨 30mL 액상 (62)</button>
+            <button type="button" class="tab-btn" data-cat="cat-100ml" onclick="switchCategory('cat-100ml', this)">☁️ 100mL 액상 (16)</button>
+            <button type="button" class="tab-btn" data-cat="cat-device" onclick="switchCategory('cat-device', this)">📱 디바이스 (15)</button>
+            <button type="button" class="tab-btn" data-cat="cat-parts" onclick="switchCategory('cat-parts', this)">⚙️ 코일&팟 (19)</button>
+            <button type="button" class="tab-btn" data-cat="cat-disposable" onclick="switchCategory('cat-disposable', this)">🔋 일회용 (69)</button>
+        </div>
+        <div class="search-bar-box">
+            <input type="text" id="product-search" class="search-input" placeholder="🔍 전체 제품 검색 (예: 알로에, 마이몬스터, 젤로, 발라리안...)" oninput="filterProducts()">
+            <button type="button" id="search-clear" class="search-clear-btn" onclick="clearSearch()">✕</button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- 1. 30ml 액상 -->
+        <div id="cat-30ml" class="category-section active">
+            <div class="category-title">💨 30mL 입호흡 액상 목록 (62종)</div>
+            <div class="product-card" data-name="타격첨가제 30ml [단독사용금지]" data-price="29000">
+                <img class="product-img" data-badge="30ml" alt="타격첨가제 30ml [단독사용금지]" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>타격첨가제 30ml [단독사용금지]</h3>
+                    <p>29,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="쿨링첨가제 30ml [단독사용금지]" data-price="11000">
+                <img class="product-img" data-badge="30ml" alt="쿨링첨가제 30ml [단독사용금지]" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>쿨링첨가제 30ml [단독사용금지]</h3>
+                    <p>11,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="마이몬스터 30ml /라임알로에" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="마이몬스터 30ml /라임알로에" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>마이몬스터 30ml /라임알로에</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="마이몬스터 30ml / 버블껌" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="마이몬스터 30ml / 버블껌" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>마이몬스터 30ml / 버블껌</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="마이몬스터 30ml / 애플힙" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="마이몬스터 30ml / 애플힙" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>마이몬스터 30ml / 애플힙</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="마이몬스터 30ml / 청포도" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="마이몬스터 30ml / 청포도" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>마이몬스터 30ml / 청포도</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="(논쿨링)마이몬스터 /버블껌 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="(논쿨링)마이몬스터 /버블껌 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>(논쿨링)마이몬스터 /버블껌 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="(논쿨링)마이몬스터 /애플힙 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="(논쿨링)마이몬스터 /애플힙 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>(논쿨링)마이몬스터 /애플힙 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="아프니까 30ml / 샤인머스켓" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="아프니까 30ml / 샤인머스켓" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>아프니까 30ml / 샤인머스켓</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="아프니까 30ml / 자몽" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="아프니까 30ml / 자몽" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>아프니까 30ml / 자몽</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="아프니까 30ml / 파인애플" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="아프니까 30ml / 파인애플" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>아프니까 30ml / 파인애플</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="다이브인 30ml / 리치" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="다이브인 30ml / 리치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>다이브인 30ml / 리치</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="다이브인 30ml  / 블루레몬에이드" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="다이브인 30ml  / 블루레몬에이드" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>다이브인 30ml  / 블루레몬에이드</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="다이브인 30ml / 자두" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="다이브인 30ml / 자두" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>다이브인 30ml / 자두</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="이쿠조 30ml / 레몬애플" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="이쿠조 30ml / 레몬애플" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>이쿠조 30ml / 레몬애플</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="이쿠조 30ml / 청포도체리" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="이쿠조 30ml / 청포도체리" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>이쿠조 30ml / 청포도체리</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="이쿠조 30ml / 피치라임" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="이쿠조 30ml / 피치라임" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>이쿠조 30ml / 피치라임</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="시원하개 30ml / 사이다" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="시원하개 30ml / 사이다" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>시원하개 30ml / 사이다</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="시원하개 30ml / 에너지드링크" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="시원하개 30ml / 에너지드링크" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>시원하개 30ml / 에너지드링크</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="시원하개 30ml / 콜라" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="시원하개 30ml / 콜라" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>시원하개 30ml / 콜라</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="시원하개 30ml / 포카리" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="시원하개 30ml / 포카리" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>시원하개 30ml / 포카리</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="브릭스 30ml / 라임라임" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="브릭스 30ml / 라임라임" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>브릭스 30ml / 라임라임</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="브릭스 30ml / 블루레몬에이드" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="브릭스 30ml / 블루레몬에이드" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>브릭스 30ml / 블루레몬에이드</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="브릭스 30ml / 샤인그레이프" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="브릭스 30ml / 샤인그레이프" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>브릭스 30ml / 샤인그레이프</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="한야 30ml /알로에" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="한야 30ml /알로에" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>한야 30ml /알로에</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="한야 30ml / 라임펀치" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="한야 30ml / 라임펀치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>한야 30ml / 라임펀치</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="한야 30ml / 리치" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="한야 30ml / 리치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>한야 30ml / 리치</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="한야 30ml / 샤인" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="한야 30ml / 샤인" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>한야 30ml / 샤인</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="한야 30ml /아이스블라스트" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="한야 30ml /아이스블라스트" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>한야 30ml /아이스블라스트</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="ICY 바 30ml / 메론" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="ICY 바 30ml / 메론" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>ICY 바 30ml / 메론</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="ICY 바 30ml / 샤크" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="ICY 바 30ml / 샤크" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>ICY 바 30ml / 샤크</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="ICY 바 30ml / 스크롤" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="ICY 바 30ml / 스크롤" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>ICY 바 30ml / 스크롤</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="ICY 바 30ml / 포도" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="ICY 바 30ml / 포도" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>ICY 바 30ml / 포도</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="블랙코어 30ml / 블랙멘솔" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="블랙코어 30ml / 블랙멘솔" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>블랙코어 30ml / 블랙멘솔</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="블랙코어 30ml /블랙토바코" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="블랙코어 30ml /블랙토바코" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>블랙코어 30ml /블랙토바코</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="블랙코어 30ml / 블랙피치" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="블랙코어 30ml / 블랙피치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>블랙코어 30ml / 블랙피치</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="한잔 30ml / 자몽허니블랙티" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="한잔 30ml / 자몽허니블랙티" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>한잔 30ml / 자몽허니블랙티</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="한잔 30ml / 무향" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="한잔 30ml / 무향" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>한잔 30ml / 무향</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="사이클론 30ml / 아이스멘솔" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="사이클론 30ml / 아이스멘솔" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>사이클론 30ml / 아이스멘솔</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="ABC 30ml /알로에포도" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="ABC 30ml /알로에포도" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>ABC 30ml /알로에포도</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="ABC 30ml /바나나" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="ABC 30ml /바나나" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>ABC 30ml /바나나</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="Oh자두 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="Oh자두 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>Oh자두 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="레몬&amp;라임 피즈 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="레몬&amp;라임 피즈 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>레몬&amp;라임 피즈 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="금귤 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="금귤 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>금귤 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="애플민트 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="애플민트 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>애플민트 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="케라디 치즈 밀크 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="케라디 치즈 밀크 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>케라디 치즈 밀크 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="스트로베리 치즈 케이크 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="스트로베리 치즈 케이크 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>스트로베리 치즈 케이크 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="콘치즈 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="콘치즈 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>콘치즈 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="초키 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="초키 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>초키 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="ㅇㅋㄹㅌ 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="ㅇㅋㄹㅌ 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>ㅇㅋㄹㅌ 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="로제(R♥ZE) 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="로제(R♥ZE) 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>로제(R♥ZE) 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="제로코크 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="제로코크 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>제로코크 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="에너지드링크 30ml" data-price="9900">
+                <img class="product-img" data-badge="30ml" alt="에너지드링크 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>에너지드링크 30ml</h3>
+                    <p>9,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="노이스 30ml / 레몬" data-price="15000">
+                <img class="product-img" data-badge="30ml" alt="노이스 30ml / 레몬" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>노이스 30ml / 레몬</h3>
+                    <p>15,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="노이스 30ml / 메론" data-price="15000">
+                <img class="product-img" data-badge="30ml" alt="노이스 30ml / 메론" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>노이스 30ml / 메론</h3>
+                    <p>15,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="노이스 30ml / 샤인머스켓" data-price="15000">
+                <img class="product-img" data-badge="30ml" alt="노이스 30ml / 샤인머스켓" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>노이스 30ml / 샤인머스켓</h3>
+                    <p>15,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="제로 30ml / 레몬" data-price="15000">
+                <img class="product-img" data-badge="30ml" alt="제로 30ml / 레몬" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>제로 30ml / 레몬</h3>
+                    <p>15,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="제로 30ml / 샤인머스켓" data-price="15000">
+                <img class="product-img" data-badge="30ml" alt="제로 30ml / 샤인머스켓" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>제로 30ml / 샤인머스켓</h3>
+                    <p>15,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="제로 30ml / 애플" data-price="15000">
+                <img class="product-img" data-badge="30ml" alt="제로 30ml / 애플" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>제로 30ml / 애플</h3>
+                    <p>15,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="제로 30ml / 멘솔" data-price="15000">
+                <img class="product-img" data-badge="30ml" alt="제로 30ml / 멘솔" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>제로 30ml / 멘솔</h3>
+                    <p>15,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="제로 30ml / 버블껌" data-price="15000">
+                <img class="product-img" data-badge="30ml" alt="제로 30ml / 버블껌" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>제로 30ml / 버블껌</h3>
+                    <p>15,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="더블멘솔 30ml" data-price="15000">
+                <img class="product-img" data-badge="30ml" alt="더블멘솔 30ml" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>더블멘솔 30ml</h3>
+                    <p>15,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 100ml 액상 -->
+        <div id="cat-100ml" class="category-section">
+            <div class="category-title">☁️ 100mL 폐호흡 액상 목록 (16종)</div>
+            <div class="product-card" data-name="할꼬냥 100ml / 체리" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="할꼬냥 100ml / 체리" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>할꼬냥 100ml / 체리</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="할꼬냥 100ml / 레몬에이드" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="할꼬냥 100ml / 레몬에이드" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>할꼬냥 100ml / 레몬에이드</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="할꼬냥 100ml / 샤인머스켓" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="할꼬냥 100ml / 샤인머스켓" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>할꼬냥 100ml / 샤인머스켓</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="토바코크러쉬 100ml / 토바코골드" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="토바코크러쉬 100ml / 토바코골드" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>토바코크러쉬 100ml / 토바코골드</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="토바코크러쉬 100ml / 토바코멘솔" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="토바코크러쉬 100ml / 토바코멘솔" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>토바코크러쉬 100ml / 토바코멘솔</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="피버타임 100ml / 멘솔" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="피버타임 100ml / 멘솔" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>피버타임 100ml / 멘솔</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="피버타임 100ml / 소다" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="피버타임 100ml / 소다" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>피버타임 100ml / 소다</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="피버타임 100ml / 알로에" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="피버타임 100ml / 알로에" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>피버타임 100ml / 알로에</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="쏙 100ml / 애플망고" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="쏙 100ml / 애플망고" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>쏙 100ml / 애플망고</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="쏙 100ml / 체리콕" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="쏙 100ml / 체리콕" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>쏙 100ml / 체리콕</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="해피조이 100ml / 피치" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="해피조이 100ml / 피치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>해피조이 100ml / 피치</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="가보자곰 100ml / 메론" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="가보자곰 100ml / 메론" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>가보자곰 100ml / 메론</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="스윗드림 100ml / 블루베리" data-price="27900">
+                <img class="product-img" data-badge="100ml" alt="스윗드림 100ml / 블루베리" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>스윗드림 100ml / 블루베리</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="(폐DTL) 해피조이 100ml / 피치" data-price="23900">
+                <img class="product-img" data-badge="100ml" alt="(폐DTL) 해피조이 100ml / 피치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>(폐DTL) 해피조이 100ml / 피치</h3>
+                    <p>23,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="(폐DTL) 해피조이 100ml / 라임" data-price="23900">
+                <img class="product-img" data-badge="100ml" alt="(폐DTL) 해피조이 100ml / 라임" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>(폐DTL) 해피조이 100ml / 라임</h3>
+                    <p>23,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="(폐DTL) 할꼬냥 100ml / 샤인머스켓" data-price="23900">
+                <img class="product-img" data-badge="100ml" alt="(폐DTL) 할꼬냥 100ml / 샤인머스켓" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>(폐DTL) 할꼬냥 100ml / 샤인머스켓</h3>
+                    <p>23,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 디바이스 -->
+        <div id="cat-device" class="category-section">
+            <div class="category-title">📱 디바이스 본체 목록 (15종)</div>
+            <div class="product-card" data-name="말론(브러쉬드실버) KIT" data-price="68400">
+                <img class="product-img" data-badge="device" alt="말론(브러쉬드실버) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>말론(브러쉬드실버) KIT</h3>
+                    <p>68,400원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="말론S(블랙) KIT" data-price="68900">
+                <img class="product-img" data-badge="device" alt="말론S(블랙) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>말론S(블랙) KIT</h3>
+                    <p>68,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="젤로 크리스탈(클리어) KIT" data-price="69000">
+                <img class="product-img" data-badge="device" alt="젤로 크리스탈(클리어) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>젤로 크리스탈(클리어) KIT</h3>
+                    <p>69,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="젤로맥스(그레이) KIT" data-price="65000">
+                <img class="product-img" data-badge="device" alt="젤로맥스(그레이) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>젤로맥스(그레이) KIT</h3>
+                    <p>65,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="젤로(블랙로즈) KIT" data-price="53000">
+                <img class="product-img" data-badge="device" alt="젤로(블랙로즈) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>젤로(블랙로즈) KIT</h3>
+                    <p>53,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="ASDF 인게이지(화이트) KIT" data-price="78000">
+                <img class="product-img" data-badge="device" alt="ASDF 인게이지(화이트) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>ASDF 인게이지(화이트) KIT</h3>
+                    <p>78,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="발라리안 맥스 프로(화이트) KIT" data-price="78000">
+                <img class="product-img" data-badge="device" alt="발라리안 맥스 프로(화이트) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>발라리안 맥스 프로(화이트) KIT</h3>
+                    <p>78,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="베놈 아스트로 MK.3(블랙) KIT" data-price="75000">
+                <img class="product-img" data-badge="device" alt="베놈 아스트로 MK.3(블랙) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>베놈 아스트로 MK.3(블랙) KIT</h3>
+                    <p>75,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="아스몬 하이(오로라) KIT" data-price="69000">
+                <img class="product-img" data-badge="device" alt="아스몬 하이(오로라) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>아스몬 하이(오로라) KIT</h3>
+                    <p>69,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="닷 팟 맥스 (플로우 영) KIT" data-price="65000">
+                <img class="product-img" data-badge="device" alt="닷 팟 맥스 (플로우 영) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>닷 팟 맥스 (플로우 영) KIT</h3>
+                    <p>65,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 맥스 KIT(브러쉬드 그레이)" data-price="55000">
+                <img class="product-img" data-badge="device" alt="지코어 맥스 KIT(브러쉬드 그레이)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 맥스 KIT(브러쉬드 그레이)</h3>
+                    <p>55,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 MPOD(그레이) KIT" data-price="35000">
+                <img class="product-img" data-badge="device" alt="지코어 MPOD(그레이) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 MPOD(그레이) KIT</h3>
+                    <p>35,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="글렌트 프로(블랙) KIT" data-price="51300">
+                <img class="product-img" data-badge="device" alt="글렌트 프로(블랙) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>글렌트 프로(블랙) KIT</h3>
+                    <p>51,300원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="베이포레소 크로스6 미니(티타늄 블랙) KIT" data-price="49000">
+                <img class="product-img" data-badge="device" alt="베이포레소 크로스6 미니(티타늄 블랙) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>베이포레소 크로스6 미니(티타늄 블랙) KIT</h3>
+                    <p>49,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="부푸 브이메이트 I3(카본 블랙) KIT" data-price="42000">
+                <img class="product-img" data-badge="device" alt="부푸 브이메이트 I3(카본 블랙) KIT" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>부푸 브이메이트 I3(카본 블랙) KIT</h3>
+                    <p>42,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 코일&팟 -->
+        <div id="cat-parts" class="category-section">
+            <div class="category-title">⚙️ 코일 & 팟 목록 (19종)</div>
+            <div class="product-card" data-name="말론 팟 /0.6옴(2개입)" data-price="10000">
+                <img class="product-img" data-badge="parts" alt="말론 팟 /0.6옴(2개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>말론 팟 /0.6옴(2개입)</h3>
+                    <p>10,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="말론S 팟 /0.6옴(2개입)" data-price="10000">
+                <img class="product-img" data-badge="parts" alt="말론S 팟 /0.6옴(2개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>말론S 팟 /0.6옴(2개입)</h3>
+                    <p>10,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="젤로 크리스탈 클리어 팟 /0.6옴(2개입)" data-price="10000">
+                <img class="product-img" data-badge="parts" alt="젤로 크리스탈 클리어 팟 /0.6옴(2개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>젤로 크리스탈 클리어 팟 /0.6옴(2개입)</h3>
+                    <p>10,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="젤로맥스 팟 /0.6옴(3개입)" data-price="13500">
+                <img class="product-img" data-badge="parts" alt="젤로맥스 팟 /0.6옴(3개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>젤로맥스 팟 /0.6옴(3개입)</h3>
+                    <p>13,500원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="젤로 부스트 팟 /0.8옴 (3개입)" data-price="12000">
+                <img class="product-img" data-badge="parts" alt="젤로 부스트 팟 /0.8옴 (3개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>젤로 부스트 팟 /0.8옴 (3개입)</h3>
+                    <p>12,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="ASDF 인게이지 팟 /0.6옴(1개입)" data-price="6000">
+                <img class="product-img" data-badge="parts" alt="ASDF 인게이지 팟 /0.6옴(1개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>ASDF 인게이지 팟 /0.6옴(1개입)</h3>
+                    <p>6,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="발라리안 맥스 프로 AIO 일체형 팟 /0.6옴(2개입)" data-price="12000">
+                <img class="product-img" data-badge="parts" alt="발라리안 맥스 프로 AIO 일체형 팟 /0.6옴(2개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>발라리안 맥스 프로 AIO 일체형 팟 /0.6옴(2개입)</h3>
+                    <p>12,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="발라리안 에어 팟 /0.6옴(2개입)" data-price="9000">
+                <img class="product-img" data-badge="parts" alt="발라리안 에어 팟 /0.6옴(2개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>발라리안 에어 팟 /0.6옴(2개입)</h3>
+                    <p>9,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="발라리안 0.6옴 코일 (4개입)" data-price="15600">
+                <img class="product-img" data-badge="parts" alt="발라리안 0.6옴 코일 (4개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>발라리안 0.6옴 코일 (4개입)</h3>
+                    <p>15,600원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="베놈 아스트로 팟 /레드(2개입)" data-price="11000">
+                <img class="product-img" data-badge="parts" alt="베놈 아스트로 팟 /레드(2개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>베놈 아스트로 팟 /레드(2개입)</h3>
+                    <p>11,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="아스몬 하이 0.6옴 팟(2개입)" data-price="11000">
+                <img class="product-img" data-badge="parts" alt="아스몬 하이 0.6옴 팟(2개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>아스몬 하이 0.6옴 팟(2개입)</h3>
+                    <p>11,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="닷 팟 맥스 (투엑스) 팟 /0.6옴 (2개입)" data-price="12100">
+                <img class="product-img" data-badge="parts" alt="닷 팟 맥스 (투엑스) 팟 /0.6옴 (2개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>닷 팟 맥스 (투엑스) 팟 /0.6옴 (2개입)</h3>
+                    <p>12,100원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 맥스 팟 /0.6옴(3개입)" data-price="14400">
+                <img class="product-img" data-badge="parts" alt="지코어 맥스 팟 /0.6옴(3개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 맥스 팟 /0.6옴(3개입)</h3>
+                    <p>14,400원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 MPOD 팟 /0.6옴(3개입)" data-price="12000">
+                <img class="product-img" data-badge="parts" alt="지코어 MPOD 팟 /0.6옴(3개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 MPOD 팟 /0.6옴(3개입)</h3>
+                    <p>12,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="글렌트 팟(프로 호환) /0.6옴(3개입)" data-price="13200">
+                <img class="product-img" data-badge="parts" alt="글렌트 팟(프로 호환) /0.6옴(3개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>글렌트 팟(프로 호환) /0.6옴(3개입)</h3>
+                    <p>13,200원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="베이포레소 크로스 3ml 팟 /0.6옴(4개입)" data-price="18000">
+                <img class="product-img" data-badge="parts" alt="베이포레소 크로스 3ml 팟 /0.6옴(4개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>베이포레소 크로스 3ml 팟 /0.6옴(4개입)</h3>
+                    <p>18,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="부푸 브이메이트 V5 팟 /0.7옴(3개입)" data-price="12000">
+                <img class="product-img" data-badge="parts" alt="부푸 브이메이트 V5 팟 /0.7옴(3개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>부푸 브이메이트 V5 팟 /0.7옴(3개입)</h3>
+                    <p>12,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="긱베이프 소울2 팟 /0.6옴(2개입)" data-price="9000">
+                <img class="product-img" data-badge="parts" alt="긱베이프 소울2 팟 /0.6옴(2개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>긱베이프 소울2 팟 /0.6옴(2개입)</h3>
+                    <p>9,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="하복 0.6옴 코일 (4개입)" data-price="16000">
+                <img class="product-img" data-badge="parts" alt="하복 0.6옴 코일 (4개입)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>하복 0.6옴 코일 (4개입)</h3>
+                    <p>16,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 일회용 -->
+        <div id="cat-disposable" class="category-section">
+            <div class="category-title">🔋 일회용 전자담배 목록 (69종)</div>
+            <div class="product-card" data-name="쿠모카시 바 / 아카이 이치고" data-price="24900">
+                <img class="product-img" data-badge="disposable" alt="쿠모카시 바 / 아카이 이치고" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>쿠모카시 바 / 아카이 이치고</h3>
+                    <p>24,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="쿠모카시 바 / 토레토레 도링크" data-price="24900">
+                <img class="product-img" data-badge="disposable" alt="쿠모카시 바 / 토레토레 도링크" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>쿠모카시 바 / 토레토레 도링크</h3>
+                    <p>24,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="쿠모카시 바 / 쿄호 그레이프" data-price="24900">
+                <img class="product-img" data-badge="disposable" alt="쿠모카시 바 / 쿄호 그레이프" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>쿠모카시 바 / 쿄호 그레이프</h3>
+                    <p>24,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="쿠모카시 바 / 미도리 애플" data-price="24900">
+                <img class="product-img" data-badge="disposable" alt="쿠모카시 바 / 미도리 애플" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>쿠모카시 바 / 미도리 애플</h3>
+                    <p>24,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="말론 바 / 애플미스트" data-price="28000">
+                <img class="product-img" data-badge="disposable" alt="말론 바 / 애플미스트" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>말론 바 / 애플미스트</h3>
+                    <p>28,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="말론 바 / 피치" data-price="28000">
+                <img class="product-img" data-badge="disposable" alt="말론 바 / 피치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>말론 바 / 피치</h3>
+                    <p>28,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="말론 바 / 스피아민트" data-price="28000">
+                <img class="product-img" data-badge="disposable" alt="말론 바 / 스피아민트" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>말론 바 / 스피아민트</h3>
+                    <p>28,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="템포 / 아쌈보이 25000" data-price="27900">
+                <img class="product-img" data-badge="disposable" alt="템포 / 아쌈보이 25000" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>템포 / 아쌈보이 25000</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="템포 / 제로콜라 25000" data-price="27900">
+                <img class="product-img" data-badge="disposable" alt="템포 / 제로콜라 25000" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>템포 / 제로콜라 25000</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="템포 / 베이비파인애플 25000" data-price="27900">
+                <img class="product-img" data-badge="disposable" alt="템포 / 베이비파인애플 25000" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>템포 / 베이비파인애플 25000</h3>
+                    <p>27,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="테슬라바 XT-26000N / 쥬시피치 아이스 (고농도 2%)" data-price="32900">
+                <img class="product-img" data-badge="disposable" alt="테슬라바 XT-26000N / 쥬시피치 아이스 (고농도 2%)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>테슬라바 XT-26000N / 쥬시피치 아이스 (고농도 2%)</h3>
+                    <p>32,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="테슬라바 XT-26000N / 토바코 (고농도 2%)" data-price="32900">
+                <img class="product-img" data-badge="disposable" alt="테슬라바 XT-26000N / 토바코 (고농도 2%)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>테슬라바 XT-26000N / 토바코 (고농도 2%)</h3>
+                    <p>32,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="테슬라바 XT-26000N / 스트로베리 키위 (고농도 2%)" data-price="32900">
+                <img class="product-img" data-badge="disposable" alt="테슬라바 XT-26000N / 스트로베리 키위 (고농도 2%)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>테슬라바 XT-26000N / 스트로베리 키위 (고농도 2%)</h3>
+                    <p>32,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 *대용량* / 피치" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="지코어 *대용량* / 피치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 *대용량* / 피치</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 *대용량* / 그레이프플레이버" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="지코어 *대용량* / 그레이프플레이버" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 *대용량* / 그레이프플레이버</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 *대용량* / 라임" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="지코어 *대용량* / 라임" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 *대용량* / 라임</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 *대용량* / 망고리타" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="지코어 *대용량* / 망고리타" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 *대용량* / 망고리타</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 *대용량* / 아이스 멘솔" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="지코어 *대용량* / 아이스 멘솔" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 *대용량* / 아이스 멘솔</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 *대용량* / 체리" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="지코어 *대용량* / 체리" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 *대용량* / 체리</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 *대용량* / 프로즌파인애플" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="지코어 *대용량* / 프로즌파인애플" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 *대용량* / 프로즌파인애플</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="지코어 *대용량* / 아이스 메론" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="지코어 *대용량* / 아이스 메론" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>지코어 *대용량* / 아이스 메론</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="(ZERO)지코어 *대용량* / 그레이프플레이버" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="(ZERO)지코어 *대용량* / 그레이프플레이버" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>(ZERO)지코어 *대용량* / 그레이프플레이버</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="(ZERO)지코어 *대용량* / 피치" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="(ZERO)지코어 *대용량* / 피치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>(ZERO)지코어 *대용량* / 피치</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="(ZERO)지코어 *대용량* / 알로에" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="(ZERO)지코어 *대용량* / 알로에" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>(ZERO)지코어 *대용량* / 알로에</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="(ZERO)지코어 *대용량* / 아이스 멘솔" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="(ZERO)지코어 *대용량* / 아이스 멘솔" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>(ZERO)지코어 *대용량* / 아이스 멘솔</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="(ZERO)지코어 *대용량* / 아이스 메론" data-price="19900">
+                <img class="product-img" data-badge="disposable" alt="(ZERO)지코어 *대용량* / 아이스 메론" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>(ZERO)지코어 *대용량* / 아이스 메론</h3>
+                    <p>19,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="네스티 30000 클리어 / 피치아이스 (고농도 2%)" data-price="33900">
+                <img class="product-img" data-badge="disposable" alt="네스티 30000 클리어 / 피치아이스 (고농도 2%)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>네스티 30000 클리어 / 피치아이스 (고농도 2%)</h3>
+                    <p>33,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="네스티 30000 클리어 / 더블슬로우블로우 (고농도 2%)" data-price="33900">
+                <img class="product-img" data-badge="disposable" alt="네스티 30000 클리어 / 더블슬로우블로우 (고농도 2%)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>네스티 30000 클리어 / 더블슬로우블로우 (고농도 2%)</h3>
+                    <p>33,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="네스티 30000 클리어 / 알로에그레이프 (고농도 2%)" data-price="33900">
+                <img class="product-img" data-badge="disposable" alt="네스티 30000 클리어 / 알로에그레이프 (고농도 2%)" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>네스티 30000 클리어 / 알로에그레이프 (고농도 2%)</h3>
+                    <p>33,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="네스티원 40K 스타터킷 / 더블슬로우블로우" data-price="40900">
+                <img class="product-img" data-badge="disposable" alt="네스티원 40K 스타터킷 / 더블슬로우블로우" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>네스티원 40K 스타터킷 / 더블슬로우블로우</h3>
+                    <p>40,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="네스티원 40K 스타터킷 / 콜라 아이스" data-price="40900">
+                <img class="product-img" data-badge="disposable" alt="네스티원 40K 스타터킷 / 콜라 아이스" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>네스티원 40K 스타터킷 / 콜라 아이스</h3>
+                    <p>40,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="네스티원 40K 리필용 / 더블슬로우블로우" data-price="23400">
+                <img class="product-img" data-badge="disposable" alt="네스티원 40K 리필용 / 더블슬로우블로우" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>네스티원 40K 리필용 / 더블슬로우블로우</h3>
+                    <p>23,400원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="네스티원 40K 리필용 / 콜라 아이스" data-price="23400">
+                <img class="product-img" data-badge="disposable" alt="네스티원 40K 리필용 / 콜라 아이스" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>네스티원 40K 리필용 / 콜라 아이스</h3>
+                    <p>23,400원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="카오린 스타터킷 / 나미마르키사" data-price="28000">
+                <img class="product-img" data-badge="disposable" alt="카오린 스타터킷 / 나미마르키사" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>카오린 스타터킷 / 나미마르키사</h3>
+                    <p>28,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="카오린 리필용 / 나미마르키사" data-price="19000">
+                <img class="product-img" data-badge="disposable" alt="카오린 리필용 / 나미마르키사" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>카오린 리필용 / 나미마르키사</h3>
+                    <p>19,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="카오린 리필용 / 쿠로피치" data-price="19000">
+                <img class="product-img" data-badge="disposable" alt="카오린 리필용 / 쿠로피치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>카오린 리필용 / 쿠로피치</h3>
+                    <p>19,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 리필용 / 버블껌" data-price="23900">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 리필용 / 버블껌" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 리필용 / 버블껌</h3>
+                    <p>23,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 리필용 / 스트로베리밀크" data-price="23900">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 리필용 / 스트로베리밀크" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 리필용 / 스트로베리밀크</h3>
+                    <p>23,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 리필용 / 레몬코크" data-price="23900">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 리필용 / 레몬코크" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 리필용 / 레몬코크</h3>
+                    <p>23,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 리필용 / 소다아이스크림" data-price="23900">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 리필용 / 소다아이스크림" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 리필용 / 소다아이스크림</h3>
+                    <p>23,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 리필용 / 더블피치" data-price="23900">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 리필용 / 더블피치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 리필용 / 더블피치</h3>
+                    <p>23,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 리필용 / 알로에그레이프" data-price="23900">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 리필용 / 알로에그레이프" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 리필용 / 알로에그레이프</h3>
+                    <p>23,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 리필용 / 메론아이스크림" data-price="23900">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 리필용 / 메론아이스크림" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 리필용 / 메론아이스크림</h3>
+                    <p>23,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 배터리 단품" data-price="12900">
+                <img class="product-img" data-badge="disposable" alt="갓모드 배터리 단품" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 배터리 단품</h3>
+                    <p>12,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 스타터 세트 / 버블껌" data-price="34800">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 스타터 세트 / 버블껌" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 스타터 세트 / 버블껌</h3>
+                    <p>34,800원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 스타터 세트 / 스트로베리밀크" data-price="34800">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 스타터 세트 / 스트로베리밀크" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 스타터 세트 / 스트로베리밀크</h3>
+                    <p>34,800원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 스타터 세트 / 레몬코크" data-price="34800">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 스타터 세트 / 레몬코크" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 스타터 세트 / 레몬코크</h3>
+                    <p>34,800원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 스타터 세트 / 소다아이스크림" data-price="34800">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 스타터 세트 / 소다아이스크림" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 스타터 세트 / 소다아이스크림</h3>
+                    <p>34,800원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 스타터 세트 / 더블피치" data-price="34800">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 스타터 세트 / 더블피치" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 스타터 세트 / 더블피치</h3>
+                    <p>34,800원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 스타터 세트 / 알로에그레이프" data-price="34800">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 스타터 세트 / 알로에그레이프" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 스타터 세트 / 알로에그레이프</h3>
+                    <p>34,800원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="갓모드 40K 스타터 세트 / 메론아이스크림" data-price="34800">
+                <img class="product-img" data-badge="disposable" alt="갓모드 40K 스타터 세트 / 메론아이스크림" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>갓모드 40K 스타터 세트 / 메론아이스크림</h3>
+                    <p>34,800원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 리필용 / 더블그레이프" data-price="21900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 리필용 / 더블그레이프" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 리필용 / 더블그레이프</h3>
+                    <p>21,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 리필용 / 블루레몬셔벗" data-price="21900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 리필용 / 블루레몬셔벗" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 리필용 / 블루레몬셔벗</h3>
+                    <p>21,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 리필용 / 레드애플알로에" data-price="21900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 리필용 / 레드애플알로에" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 리필용 / 레드애플알로에</h3>
+                    <p>21,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 리필용 / 레몬콜라" data-price="21900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 리필용 / 레몬콜라" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 리필용 / 레몬콜라</h3>
+                    <p>21,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 리필용 / 피치베리셔벗" data-price="21900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 리필용 / 피치베리셔벗" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 리필용 / 피치베리셔벗</h3>
+                    <p>21,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 리필용 / 요쿠르트" data-price="21900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 리필용 / 요쿠르트" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 리필용 / 요쿠르트</h3>
+                    <p>21,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 리필용 / 더블파인애플레몬" data-price="21900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 리필용 / 더블파인애플레몬" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 리필용 / 더블파인애플레몬</h3>
+                    <p>21,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 New 배터리 1000mAh" data-price="12500">
+                <img class="product-img" data-badge="disposable" alt="언플러그 New 배터리 1000mAh" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 New 배터리 1000mAh</h3>
+                    <p>12,500원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 스타터 세트 /더블그레이프 + New 배터리 1000mAh" data-price="31900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 스타터 세트 /더블그레이프 + New 배터리 1000mAh" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 스타터 세트 /더블그레이프 + New 배터리 1000mAh</h3>
+                    <p>31,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 스타터 세트 /블루레몬셔벗 + New 배터리 1000mAh" data-price="31900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 스타터 세트 /블루레몬셔벗 + New 배터리 1000mAh" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 스타터 세트 /블루레몬셔벗 + New 배터리 1000mAh</h3>
+                    <p>31,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 스타터 세트 /레드애플알로에 + New 배터리 1000mAh" data-price="31900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 스타터 세트 /레드애플알로에 + New 배터리 1000mAh" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 스타터 세트 /레드애플알로에 + New 배터리 1000mAh</h3>
+                    <p>31,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 스타터 세트 /레몬콜라 + New 배터리 1000mAh" data-price="31900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 스타터 세트 /레몬콜라 + New 배터리 1000mAh" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 스타터 세트 /레몬콜라 + New 배터리 1000mAh</h3>
+                    <p>31,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 스타터 세트 /피치베리셔벗 + New 배터리 1000mAh" data-price="31900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 스타터 세트 /피치베리셔벗 + New 배터리 1000mAh" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 스타터 세트 /피치베리셔벗 + New 배터리 1000mAh</h3>
+                    <p>31,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 스타터 세트 /요쿠르트 + New 배터리 1000mAh" data-price="31900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 스타터 세트 /요쿠르트 + New 배터리 1000mAh" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 스타터 세트 /요쿠르트 + New 배터리 1000mAh</h3>
+                    <p>31,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="언플러그 스타터 세트 /더블파인애플레몬 + New 배터리 1000mAh" data-price="31900">
+                <img class="product-img" data-badge="disposable" alt="언플러그 스타터 세트 /더블파인애플레몬 + New 배터리 1000mAh" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>언플러그 스타터 세트 /더블파인애플레몬 + New 배터리 1000mAh</h3>
+                    <p>31,900원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="컴온 / 그레이프" data-price="19000">
+                <img class="product-img" data-badge="disposable" alt="컴온 / 그레이프" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>컴온 / 그레이프</h3>
+                    <p>19,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="컴온 / 라임" data-price="19000">
+                <img class="product-img" data-badge="disposable" alt="컴온 / 라임" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>컴온 / 라임</h3>
+                    <p>19,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+            <div class="product-card" data-name="컴온 / 민트" data-price="19000">
+                <img class="product-img" data-badge="disposable" alt="컴온 / 민트" onclick="openImageModal(this)">
+                <div class="product-info">
+                    <h3>컴온 / 민트</h3>
+                    <p>19,000원</p>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQty(this, -1)">-</button>
+                    <span class="qty">0</span>
+                    <button type="button" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="empty-search-msg" class="empty-search-msg">
+            검색 결과가 없습니다. 다른 키워드로 검색해 보세요.
+        </div>
+
+    </div>
+
+    <!-- 하단 실시간 요약 및 주문 바 -->
+    <div class="order-bar">
+        <div class="selected-preview" id="selected-preview">
+            <span style="color: #8b95a1;">선택된 상품이 없습니다.</span>
+        </div>
+        <div class="order-summary">
+            <span>총 결제 금액</span>
+            <span class="total-val" id="total-price">0원</span>
+        </div>
+        <button type="button" class="order-btn" onclick="sendOrder()">카카오톡으로 주문 내역 전송하기</button>
+    </div>
+
+    <!-- 이미지 확대 보기 팝업(모달) -->
+    <div id="image-modal" class="modal" onclick="closeImageModal()">
+        <button type="button" class="modal-close" onclick="closeImageModal()">&times;</button>
+        <img id="modal-img" class="modal-img" src="" alt="확대 이미지">
+        <div id="modal-title" class="modal-title"></div>
+    </div>
+
+    <!-- 성인 인증 생년월일 입력 모달 (년/월/일 고정) -->
+    <div id="adult-modal" class="adult-overlay">
+        <div class="adult-box">
+            <h3>🔞 성인 인증</h3>
+            <p>만 19세 이상 성인 고객만 주문이 가능합니다.<br>생년월일 숫자만 입력해 주세요.</p>
+            <div class="birth-input-group">
+                <input type="tel" id="birth-yy" class="birth-field" maxlength="2" inputmode="numeric" pattern="[0-9]*" placeholder="05" aria-label="출생연도 2자리">
+                <span class="birth-unit">년</span>
+                <input type="tel" id="birth-mm" class="birth-field" maxlength="2" inputmode="numeric" pattern="[0-9]*" placeholder="03" aria-label="출생월 2자리">
+                <span class="birth-unit">월</span>
+                <input type="tel" id="birth-dd" class="birth-field" maxlength="2" inputmode="numeric" pattern="[0-9]*" placeholder="18" aria-label="출생일 2자리">
+                <span class="birth-unit">일</span>
+            </div>
+            <div class="adult-btn-group">
+                <button type="button" class="adult-cancel-btn" onclick="closeAdultModal()">취소</button>
+                <button type="button" class="adult-confirm-btn" onclick="verifyAdultBirth()">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- iOS 브라우저 자동 복사 차단 시 1터치 복사용 보조 창 -->
+    <div id="copy-overlay" class="copy-overlay">
+        <div class="copy-box">
+            <p>주문서 작성이 완료되었습니다.<br>아래 버튼을 눌러 주문서를 복사해 주세요.</p>
+            <button type="button" class="copy-action-btn" onclick="manualCopyOrder()">📋 주문서 복사하기</button>
+        </div>
+    </div>
+
+    <script>
+        let pendingOrderBaseText = "";
+        let pendingFinalOrderText = "";
+        let activeCategoryId = "cat-30ml";
+
+        const CATEGORY_BADGES = {
+            "30ml": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22128%22%20height%3D%22128%22%20viewBox%3D%220%200%20128%20128%22%3E%3Crect%20width%3D%22128%22%20height%3D%22128%22%20rx%3D%2216%22%20fill%3D%22%23e8f3ff%22/%3E%3Ctext%20x%3D%2264%22%20y%3D%2260%22%20font-size%3D%2238%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%92%A8%3C/text%3E%3Ctext%20x%3D%2264%22%20y%3D%22102%22%20font-family%3D%22sans-serif%22%20font-size%3D%2214%22%20font-weight%3D%22700%22%20fill%3D%22%231b64da%22%20text-anchor%3D%22middle%22%3E30mL%20%EC%95%A1%3C/text%3E%3C/svg%3E",
+            "100ml": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22128%22%20height%3D%22128%22%20viewBox%3D%220%200%20128%20128%22%3E%3Crect%20width%3D%22128%22%20height%3D%22128%22%20rx%3D%2216%22%20fill%3D%22%23eefbf3%22/%3E%3Ctext%20x%3D%2264%22%20y%3D%2260%22%20font-size%3D%2238%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E2%98%81%EF%B8%8F%3C/text%3E%3Ctext%20x%3D%2264%22%20y%3D%22102%22%20font-family%3D%22sans-serif%22%20font-size%3D%2214%22%20font-weight%3D%22700%22%20fill%3D%22%230d8a4e%22%20text-anchor%3D%22middle%22%3E100mL%20%3C/text%3E%3C/svg%3E",
+            "device": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22128%22%20height%3D%22128%22%20viewBox%3D%220%200%20128%20128%22%3E%3Crect%20width%3D%22128%22%20height%3D%22128%22%20rx%3D%2216%22%20fill%3D%22%23f3f0ff%22/%3E%3Ctext%20x%3D%2264%22%20y%3D%2260%22%20font-size%3D%2238%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%93%B1%3C/text%3E%3Ctext%20x%3D%2264%22%20y%3D%22102%22%20font-family%3D%22sans-serif%22%20font-size%3D%2214%22%20font-weight%3D%22700%22%20fill%3D%22%235f3dc4%22%20text-anchor%3D%22middle%22%3E%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4%3C/text%3E%3C/svg%3E",
+            "parts": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22128%22%20height%3D%22128%22%20viewBox%3D%220%200%20128%20128%22%3E%3Crect%20width%3D%22128%22%20height%3D%22128%22%20rx%3D%2216%22%20fill%3D%22%23fff4e6%22/%3E%3Ctext%20x%3D%2264%22%20y%3D%2260%22%20font-size%3D%2238%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E2%9A%99%EF%B8%8F%3C/text%3E%3Ctext%20x%3D%2264%22%20y%3D%22102%22%20font-family%3D%22sans-serif%22%20font-size%3D%2214%22%20font-weight%3D%22700%22%20fill%3D%22%23d9480f%22%20text-anchor%3D%22middle%22%3E%EC%BD%94%EC%9D%BC%26amp%3B%ED%8C%9F%3C/text%3E%3C/svg%3E",
+            "disposable": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22128%22%20height%3D%22128%22%20viewBox%3D%220%200%20128%20128%22%3E%3Crect%20width%3D%22128%22%20height%3D%22128%22%20rx%3D%2216%22%20fill%3D%22%23fff0f6%22/%3E%3Ctext%20x%3D%2264%22%20y%3D%2260%22%20font-size%3D%2238%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%94%8B%3C/text%3E%3Ctext%20x%3D%2264%22%20y%3D%22102%22%20font-family%3D%22sans-serif%22%20font-size%3D%2214%22%20font-weight%3D%22700%22%20fill%3D%22%23c2255c%22%20text-anchor%3D%22middle%22%3E%EC%9D%BC%ED%9A%8C%EC%9A%A9%3C/text%3E%3C/svg%3E"
+        };
+
+        // 페이지 로드 시 각 제품군 기본 아이콘 자동 적용 및 생년월일 입력칸 초기화
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.product-img').forEach(img => {
+                if (!img.getAttribute('src') && img.dataset.badge && CATEGORY_BADGES[img.dataset.badge]) {
+                    img.src = CATEGORY_BADGES[img.dataset.badge];
+                }
+            });
+
+            setupBirthInputs();
+        });
+
+        // 생년월일 숫자 입력칸 자동 이동 및 숫자 제한 설정
+        function setupBirthInputs() {
+            const yyInput = document.getElementById('birth-yy');
+            const mmInput = document.getElementById('birth-mm');
+            const ddInput = document.getElementById('birth-dd');
+            const fields = [yyInput, mmInput, ddInput];
+
+            fields.forEach((field, idx) => {
+                field.addEventListener('input', function() {
+                    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2);
+                    if (this.value.length === 2 && idx < fields.length - 1) {
+                        fields[idx + 1].focus();
+                    }
+                });
+
+                field.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && this.value.length === 0 && idx > 0) {
+                        fields[idx - 1].focus();
+                    } else if (e.key === 'Enter') {
+                        if (idx < fields.length - 1) {
+                            fields[idx + 1].focus();
+                        } else {
+                            verifyAdultBirth();
+                        }
+                    }
+                });
+            });
+        }
+
+        // 이미지 확대 모달 열기
+        function openImageModal(imgElement) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            const modalTitle = document.getElementById('modal-title');
+            
+            modal.style.display = 'flex';
+            modalImg.src = imgElement.src;
+            modalTitle.textContent = imgElement.alt;
+        }
+
+        // 이미지 확대 모달 닫기
+        function closeImageModal() {
+            document.getElementById('image-modal').style.display = 'none';
+        }
+
+        // 성인 인증 모달 열기 / 닫기
+        function openAdultModal() {
+            document.getElementById('birth-yy').value = '';
+            document.getElementById('birth-mm').value = '';
+            document.getElementById('birth-dd').value = '';
+            document.getElementById('adult-modal').style.display = 'flex';
+            setTimeout(() => document.getElementById('birth-yy').focus(), 50);
+        }
+
+        function closeAdultModal() {
+            document.getElementById('adult-modal').style.display = 'none';
+        }
+
+        // 카테고리 탭 전환
+        function switchCategory(catId, btnElement) {
+            activeCategoryId = catId;
+            const searchInput = document.getElementById('product-search');
+            if (searchInput && searchInput.value.trim() !== "") {
+                searchInput.value = "";
+                document.getElementById('search-clear').style.display = 'none';
+            }
+
+            document.querySelectorAll('.category-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.product-card').forEach(card => card.style.display = 'flex');
+            document.getElementById('empty-search-msg').style.display = 'none';
+            
+            document.getElementById(catId).classList.add('active');
+            btnElement.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 전체 제품 실시간 검색 필터
+        function filterProducts() {
+            const keyword = document.getElementById('product-search').value.trim().toLowerCase();
+            const clearBtn = document.getElementById('search-clear');
+            const emptyMsg = document.getElementById('empty-search-msg');
+
+            if (keyword === "") {
+                clearBtn.style.display = 'none';
+                emptyMsg.style.display = 'none';
+                document.querySelectorAll('.category-section').forEach(sec => {
+                    sec.classList.toggle('active', sec.id === activeCategoryId);
+                });
+                document.querySelectorAll('.product-card').forEach(card => {
+                    card.style.display = 'flex';
+                });
+                return;
+            }
+
+            clearBtn.style.display = 'block';
+            let totalVisible = 0;
+
+            document.querySelectorAll('.category-section').forEach(sec => {
+                let sectionVisible = 0;
+                sec.querySelectorAll('.product-card').forEach(card => {
+                    const name = card.dataset.name.toLowerCase();
+                    if (name.includes(keyword)) {
+                        card.style.display = 'flex';
+                        sectionVisible++;
+                        totalVisible++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                sec.classList.toggle('active', sectionVisible > 0);
+            });
+
+            emptyMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        }
+
+        // 검색어 초기화
+        function clearSearch() {
+            document.getElementById('product-search').value = '';
+            filterProducts();
+        }
+
+        // 수량 변경
+        function changeQty(btn, delta) {
+            const card = btn.closest('.product-card');
+            const qtySpan = card.querySelector('.qty');
+            let currentQty = parseInt(qtySpan.textContent) + delta;
+            if (currentQty < 0) currentQty = 0;
+            qtySpan.textContent = currentQty;
+            updateRealtimeSummary();
+        }
+
+        // 실시간 요약 및 금액 계산
+        function updateRealtimeSummary() {
+            let total = 0;
+            let previewHtml = "";
+            let hasItem = false;
+
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                const name = card.dataset.name;
+                const price = parseInt(card.dataset.price);
+                const qty = parseInt(card.querySelector('.qty').textContent);
+                
+                if (qty > 0) {
+                    hasItem = true;
+                    total += price * qty;
+                    previewHtml += `<div class="selected-item-row"><span>${name} x ${qty}개</span><span>${(price*qty).toLocaleString()}원</span></div>`;
+                }
+            });
+
+            if (!hasItem) {
+                previewHtml = '<span style="color: #8b95a1;">선택된 상품이 없습니다.</span>';
+            }
+
+            document.getElementById('selected-preview').innerHTML = previewHtml;
+            document.getElementById('total-price').textContent = total.toLocaleString() + '원';
+        }
+
+        // 주문 시작 함수 (상품 확인 후 성인 인증 모달 호출)
+        function sendOrder() {
+            let orderText = "전담스팟 정관점입니다.\n고객님께서 주문하신 내역은 아래와 같습니다.\n\n[주문 내역]\n--------------------\n";
+            let hasItem = false;
+            let total = 0;
+            
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                const name = card.dataset.name;
+                const price = parseInt(card.dataset.price);
+                const qty = parseInt(card.querySelector('.qty').textContent);
+                if (qty > 0) {
+                    hasItem = true;
+                    orderText += `• ${name} x ${qty}개 (${(price*qty).toLocaleString()}원)\n`;
+                    total += price * qty;
+                }
+            });
+
+            if (!hasItem) {
+                alert("선택된 상품이 없습니다. 수량을 선택해 주세요.");
+                return;
+            }
+            
+            orderText += `--------------------\n총 결제 예정 금액: ${total.toLocaleString()}원`;
+            pendingOrderBaseText = orderText;
+
+            // [성인 인증 단계] 년/월/일 고정 입력 모달 열기
+            openAdultModal();
+        }
+
+        // 생년월일 검증 및 만 19세 확인 함수
+        function verifyAdultBirth() {
+            const yyRaw = document.getElementById('birth-yy').value.trim();
+            const mmRaw = document.getElementById('birth-mm').value.trim();
+            const ddRaw = document.getElementById('birth-dd').value.trim();
+
+            if (yyRaw.length !== 2 || mmRaw.length === 0 || ddRaw.length === 0) {
+                alert("생년월일(년 2자리, 월, 일)을 모두 입력해 주세요.");
+                if (yyRaw.length !== 2) document.getElementById('birth-yy').focus();
+                else if (mmRaw.length === 0) document.getElementById('birth-mm').focus();
+                else document.getElementById('birth-dd').focus();
+                return;
+            }
+
+            const yy = parseInt(yyRaw, 10);
+            const mm = parseInt(mmRaw, 10);
+            const dd = parseInt(ddRaw, 10);
+
+            if (mm < 1 || mm > 12 || dd < 1 || dd > 31) {
+                alert("올바른 월(01~12)과 일(01~31)을 입력해 주세요.");
+                return;
+            }
+
+            // 연도 보정 (00~26년은 2000년대, 그 외는 1900년대)
+            const fullYear = (yy <= 26) ? (2000 + yy) : (1900 + yy);
+            const birthDate = new Date(fullYear, mm - 1, dd);
+
+            // 존재하지 않는 날짜 검증 (예: 2월 30일)
+            if (birthDate.getFullYear() !== fullYear || birthDate.getMonth() !== mm - 1 || birthDate.getDate() !== dd) {
+                alert("존재하지 않는 날짜입니다. 생년월일을 다시 확인해 주세요.");
+                return;
+            }
+
+            // 만 나이 계산
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            closeAdultModal();
+
+            if (age < 19) {
+                alert("고객님은 만19세 미만으로 해당 제품 구매가 불가능합니다.");
+                return;
+            }
+
+            const formattedBirth = `${yyRaw}년 ${String(mm).padStart(2, '0')}월 ${String(dd).padStart(2, '0')}일`;
+            alert("확인되었습니다");
+            proceedOrderInfo(formattedBirth);
+        }
+
+        // [배송지 및 주문자 정보 입력 단계]
+        function proceedOrderInfo(formattedBirth) {
+            let isInfoCorrect = false;
+            let address = "";
+            let name = "";
+            let phone = "";
+            let formattedPhone = "";
+
+            while (!isInfoCorrect) {
+                address = prompt("1. 배송지 주소를 입력해 주세요:\n(예: 정관읍 곰내로...)", "부산 기장군 정관읍 ");
+                if (address === null) return;
+                if (!address.trim() || address.trim() === "부산 기장군 정관읍") {
+                    alert("상세 배송지 주소를 입력해 주세요.");
+                    continue;
+                }
+
+                name = prompt("2. 주문자 성함을 입력해 주세요:");
+                if (name === null) return;
+                if (!name.trim()) {
+                    alert("주문자 성함을 입력해 주세요.");
+                    continue;
+                }
+
+                phone = prompt("3. 연락처를 입력해 주세요:\n(- 없이 숫자만 적으셔도 됩니다)", "010");
+                if (phone === null) return;
+
+                formattedPhone = formatPhoneNumber(phone);
+
+                let checkMsg = "[입력하신 정보 확인]\n\n" +
+                            `• 생년월일: ${formattedBirth}\n` +
+                            `• 배송지 주소: ${address.trim()}\n` +
+                            `• 주문자 이름: ${name.trim()}\n` +
+                            `• 연락처: ${formattedPhone}\n\n` +
+                            "작성하신 정보가 맞습니까?\n\n[확인] 예 (주문서 복사)\n[취소] 아니오 (정보 다시 입력)";
+                
+                isInfoCorrect = confirm(checkMsg);
+            }
+
+            // 최종 주문서 완성 (생년월일 및 배송 정보 포함)
+            pendingFinalOrderText = pendingOrderBaseText + "\n\n[고객 정보]\n" +
+                `• 생년월일: ${formattedBirth}\n` +
+                `• 배송지 주소: ${address.trim()}\n` +
+                `• 주문자 이름: ${name.trim()}\n` +
+                `• 연락처: ${formattedPhone}`;
+
+            // 클립보드 복사 시도
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(pendingFinalOrderText).then(() => {
+                    showToast("📋 주문서가 복사되었습니다!\n\n상단의 [X] 버튼을 눌러 카카오톡 채팅방으로 돌아간 뒤 붙여넣기 해주세요.");
+                }).catch(() => {
+                    document.getElementById('copy-overlay').style.display = 'flex';
+                });
+            } else {
+                document.getElementById('copy-overlay').style.display = 'flex';
+            }
+        }
+
+        // iOS 브라우저용 직접 터치 복사 실행 함수
+        function manualCopyOrder() {
+            document.getElementById('copy-overlay').style.display = 'none';
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(pendingFinalOrderText).then(() => {
+                    showToast("📋 주문서가 복사되었습니다!\n\n상단의 [X] 버튼을 눌러 카카오톡 채팅방으로 돌아간 뒤 붙여넣기 해주세요.");
+                }).catch(() => {
+                    fallbackCopyText(pendingFinalOrderText);
+                });
+            } else {
+                fallbackCopyText(pendingFinalOrderText);
+            }
+        }
+
+        // 구형 브라우저 대체 복사 함수
+        function fallbackCopyText(text) {
+            let textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.setAttribute("readonly", "");
+            textArea.style.position = "fixed";
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            textArea.setSelectionRange(0, 99999);
+
+            try {
+                document.execCommand('copy');
+                showToast("📋 주문서가 복사되었습니다!\n\n상단의 [X] 버튼을 눌러 카카오톡 채팅방으로 돌아간 뒤 붙여넣기 해주세요.");
+            } catch (err) {
+                prompt("아래 내용을 길게 눌러 전체 복사해 주세요:", text);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // 연락처를 010-XXXX-XXXX 형식으로 예쁘게 다듬어주는 함수
+        function formatPhoneNumber(input) {
+            let numbers = input.replace(/[^0-9]/g, '');
+            
+            if (numbers.length === 11) {
+                return numbers.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            } else if (numbers.length === 10) {
+                return numbers.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+            } else {
+                return input.trim();
+            }
+        }
+
+        // 화면 하단에 큼직하고 친절하게 뜨는 안내 메시지(토스트) 함수
+        function showToast(message) {
+            let existingToast = document.getElementById('toast-msg');
+            if (existingToast) existingToast.remove();
+
+            let toast = document.createElement('div');
+            toast.id = 'toast-msg';
+            toast.innerHTML = message.replace(/\n/g, '<br>');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 22%;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.95);
+                color: white;
+                padding: 18px 24px;
+                border-radius: 12px;
+                font-size: 15px;
+                font-weight: 500;
+                z-index: 99999;
+                text-align: center;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+                width: 88%;
+                max-width: 380px;
+                line-height: 1.6;
+                word-break: keep-all;
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transition = "opacity 0.5s ease";
+                toast.style.opacity = "0";
+                setTimeout(() => toast.remove(), 500);
+            }, 5500);
+        }
+    </script>
+</body>
+</html>
